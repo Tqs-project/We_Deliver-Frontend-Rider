@@ -33,7 +33,9 @@ class _MainState extends State<Main> {
 
   final Map<String?, Marker> _markers = {};
   Future<void> _onMapCreated(GoogleMapController controller) async {
-    final googleOffices = await locations.getGoogleOffices();
+    final casaPina = LatLng(40.643540, -8.655130);
+    final universidade = LatLng(40.630690, -8.655130);
+    /*  
     setState(() {
       _markers.clear();
       for (final office in googleOffices.offices!) {
@@ -48,41 +50,51 @@ class _MainState extends State<Main> {
         _markers[office.name] = marker;
       }
     });
+    */
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*
+      
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Drink Up"),
       ),
-      */
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      
+      body: Center(child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          
           children: <Widget>[
             SizedBox(
                 width: MediaQuery.of(context)
                     .size
-                    .width, // or use fixed size like 200
-                height: MediaQuery.of(context).size.height,
-                child: gpsPage(context))
+                    .width/1.05, // or use fixed size like 200
+                height: MediaQuery.of(context).size.height/2.2,
+                child: gpsPage(context)),
+                OrderDetails()
           ]),
-    );
+    ));
   }
 
   Widget gpsPage(BuildContext context) {
     return Container(
+      
       width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
-      alignment: Alignment.center,
+      margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+      alignment: Alignment.topCenter,
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-              color: foregroundColor!, width: 0.5, style: BorderStyle.solid),
-        ),
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 2),
+          ),
+        ],
+        
       ),
-      padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
       child: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
@@ -93,4 +105,48 @@ class _MainState extends State<Main> {
       ),
     );
   }
+}
+
+Widget OrderDetails(){
+  return Container(
+      alignment: Alignment.topCenter,
+      margin: EdgeInsets.all(20),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(111, 111, 164, 0.1),
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Text( 'Order to Arthur Shelby from Garrafeira Martins'),
+            ),
+            Divider(
+              height: 20,
+              thickness: 2,
+            ),
+            ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(8),
+              children: <Widget>[
+                Text(
+                  "Vinho do Porto"
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
 }
