@@ -29,56 +29,60 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  final Color? foregroundColor = Colors.grey[200];
-
+  final casaPina = LatLng(40.643540, -8.655130);
+  final universidade = LatLng(40.630690, -8.655130);
   final Map<String?, Marker> _markers = {};
   Future<void> _onMapCreated(GoogleMapController controller) async {
-    final casaPina = LatLng(40.643540, -8.655130);
-    final universidade = LatLng(40.630690, -8.655130);
-    /*  
     setState(() {
       _markers.clear();
-      for (final office in googleOffices.offices!) {
-        final marker = Marker(
-          markerId: MarkerId(office.name!),
-          position: LatLng(office.lat!, office.lng!),
-          infoWindow: InfoWindow(
-            title: office.name,
-            snippet: office.address,
-          ),
-        );
-        _markers[office.name] = marker;
-      }
+
+      var marker = Marker(
+        markerId: MarkerId("Casa Pina"),
+        position: LatLng(casaPina.latitude, casaPina.longitude),
+        infoWindow: InfoWindow(
+          title: "Casa Pina",
+          snippet: "R. Antónia Rodrigues 36, 3800-102 Aveiro",
+        ),
+      );
+      _markers["Casa Pina"] = marker;
+      var marker2 = Marker(
+        markerId: MarkerId("DETI"),
+        position: LatLng(universidade.latitude, universidade.longitude),
+        infoWindow: InfoWindow(
+          title: "DETI",
+          snippet: "3810-193 Aveiro",
+        ),
+      );
+      _markers["DETI"] = marker2;
     });
-    */
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      appBar: AppBar(
-        title: Text("Drink Up"),
-      ),
-      
-      body: Center(child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          
-          children: <Widget>[
-            SizedBox(
-                width: MediaQuery.of(context)
-                    .size
-                    .width/1.05, // or use fixed size like 200
-                height: MediaQuery.of(context).size.height/2.2,
-                child: gpsPage(context)),
+        appBar: AppBar(
+          title: Text("Drink Up"),
+        ),
+        body: Center(
+            child: Container(
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(31, 29, 47, 1),
+          ),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                    width: MediaQuery.of(context).size.width /
+                        1.05, // or use fixed size like 200
+                    height: MediaQuery.of(context).size.height / 2.2,
+                    child: gpsPage(context)),
                 OrderDetails()
-          ]),
-    ));
+              ]),
+        )));
   }
 
   Widget gpsPage(BuildContext context) {
     return Container(
-      
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       alignment: Alignment.topCenter,
@@ -92,14 +96,13 @@ class _MainState extends State<Main> {
             offset: Offset(0, 2),
           ),
         ],
-        
       ),
       padding: const EdgeInsets.only(left: 5.0, right: 5.0),
       child: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
-          target: const LatLng(0, 0),
-          zoom: 2,
+          target: casaPina,
+          zoom: 14,
         ),
         markers: _markers.values.toSet(),
       ),
@@ -107,46 +110,95 @@ class _MainState extends State<Main> {
   }
 }
 
-Widget OrderDetails(){
+Widget OrderDetails() {
   return Container(
-      alignment: Alignment.topCenter,
-      margin: EdgeInsets.all(20),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(111, 111, 164, 0.1),
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 2),
+    alignment: Alignment.topCenter,
+    margin: EdgeInsets.all(20),
+    width: double.infinity,
+    decoration: BoxDecoration(
+      color: Color.fromRGBO(40, 40, 61, 1),
+      borderRadius: BorderRadius.circular(30),
+    ),
+    child: SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Divider(
+            height: 20,
+            thickness: 0,
+          ),
+          Center(
+            child: Text(
+              'To Arthur Shelby',
+              textScaleFactor: 1.0, // disables accessibility
+              style: TextStyle(
+                fontSize: 30.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          Divider(
+            height: 20,
+            thickness: 2,
+            color: Colors.red[400],
+          ),
+          ListView(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(8),
+            children: <Widget>[
+              Container(
+                alignment: Alignment.topRight,
+                margin: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(40, 40, 61, 1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  "Vinho do Porto",
+                  style: TextStyle(
+                    color: Colors.white,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white,
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.topRight,
+                margin: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(40, 40, 61, 1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  "Gin",
+                  style: TextStyle(
+                    color: Colors.white,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white,
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.topRight,
+                margin: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(40, 40, 61, 1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  "Vodka",
+                  style: TextStyle(
+                    color: Colors.white,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Text( 'Order to Arthur Shelby from Garrafeira Martins'),
-            ),
-            Divider(
-              height: 20,
-              thickness: 2,
-            ),
-            ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(8),
-              children: <Widget>[
-                Text(
-                  "Vinho do Porto"
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+    ),
+  );
 }
