@@ -30,7 +30,7 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  final Color foregroundColor = Colors.grey[200];
+  final Color foregroundColor = Colors.white;
   var pressed = 'LOGIN';
   var typeOfUser = 'RIDER';
 
@@ -60,7 +60,10 @@ class _MainState extends State<Main> {
           begin: Alignment.centerLeft,
           end: new Alignment(
               1.0, 0.0), // 10% of the width, so there are ten blinds.
-          colors: [Colors.grey[700], Colors.blueGrey[800]], // whitish to gray
+          colors: [
+            Color.fromRGBO(31, 29, 47, 1),
+            Color.fromRGBO(31, 29, 47, 0.9),
+          ], // whitish to gray
           tileMode: TileMode.clamp, // repeats the gradient over the canvas
         ),
       ),
@@ -73,19 +76,12 @@ class _MainState extends State<Main> {
               child: new Column(
                 children: <Widget>[
                   Container(
-                    height: 128.0,
-                    width: 128.0,
-                    child: new CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: this.foregroundColor,
-                      radius: 100.0,
-                      child: new Text(
-                        "Drink Up",
-                        style: TextStyle(
+                    child: Text(
+                      "Drink Up",
+                      style: TextStyle(
                           fontSize: 50.0,
                           fontWeight: FontWeight.w100,
-                        ),
-                      ),
+                          color: Colors.white),
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -187,7 +183,7 @@ class _MainState extends State<Main> {
                   child: new FlatButton(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
-                    color: Colors.purple[600],
+                    color: Colors.red[400],
                     onPressed: () => {},
                     child: Text(
                       "Log In",
@@ -259,7 +255,10 @@ class _MainState extends State<Main> {
           begin: Alignment.centerLeft,
           end: new Alignment(
               1.0, 0.0), // 10% of the width, so there are ten blinds.
-          colors: [Colors.grey[700], Colors.blueGrey[800]], // whitish to gray
+          colors: [
+            Color.fromRGBO(31, 29, 47, 1),
+            Color.fromRGBO(31, 29, 47, 0.9),
+          ], // whitish to gray
           tileMode: TileMode.repeated, // repeats the gradient over the canvas
         ),
       ),
@@ -272,19 +271,12 @@ class _MainState extends State<Main> {
               child: new Column(
                 children: <Widget>[
                   Container(
-                    height: 128.0,
-                    width: 128.0,
-                    child: new CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: this.foregroundColor,
-                      radius: 100.0,
-                      child: new Text(
-                        "Drink Up",
-                        style: TextStyle(
+                    child: new Text(
+                      "Drink Up",
+                      style: TextStyle(
                           fontSize: 50.0,
                           fontWeight: FontWeight.w100,
-                        ),
-                      ),
+                          color: Colors.white),
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -501,7 +493,7 @@ class _MainState extends State<Main> {
                   child: new FlatButton(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
-                    color: Colors.purple[600],
+                    color: Colors.red[400],
                     onPressed: () => {},
                     child: Text(
                       "Register",
