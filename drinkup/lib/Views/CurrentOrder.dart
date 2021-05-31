@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
-class CurrentOrder extends StatefulWidget {
-  CurrentOrder({Key? key, required this.title}) : super(key: key);
+import 'Profile.dart';
 
-  final String title;
+class CurrentOrder extends StatefulWidget {
+  CurrentOrder({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _CurrentOrderState createState() => _CurrentOrderState();
@@ -51,7 +53,39 @@ class _CurrentOrderState extends State<CurrentOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Drink Up"),
+          title: Text(
+            "We Deliver",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.settings,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // do something
+              },
+            ),
+          ],
+          elevation: 0,
+          brightness: Brightness.light,
+          backgroundColor: Color.fromRGBO(40, 40, 61, 0.8),
+          //automaticallyImplyLeading: false,
         ),
         body: GPSorderPage(context));
   }
@@ -121,23 +155,21 @@ class _CurrentOrderState extends State<CurrentOrder> {
           ),
           Center(
             child: Text(
-              'To Arthur Shelby',
+              'Order Details',
               textScaleFactor: 1.0,
               style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 22.0,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ),
-          Center(
-            child: Text(
-              'DETI 3810-193 Aveiro, 913 512 615',
-              textScaleFactor: 1.0,
-              style: TextStyle(
-                fontSize: 12.0,
+          Text(
+            '#916544',
+            style: TextStyle(
                 color: Colors.white,
-              ),
-            ),
+                decorationColor: Colors.white,
+                fontSize: 16),
           ),
           Divider(
             height: 20,
@@ -159,44 +191,42 @@ class _CurrentOrderState extends State<CurrentOrder> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
-                    "Vinho do Porto",
-                    style: TextStyle(
-                        color: Colors.white,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.white,
-                        fontSize: 16),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(40, 40, 61, 1),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Text("Gin",
+                      "From Casa Pina, R. Antónia Rodrigues 36, 3800-102 Aveiro",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
-                          decoration: TextDecoration.underline,
                           decorationColor: Colors.white,
                           fontSize: 16)),
                 ),
                 Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(40, 40, 61, 1),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Text(
-                    "Vodka",
-                    style: TextStyle(
-                        color: Colors.white,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.white,
-                        fontSize: 16),
-                  ),
-                ),
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(40, 40, 61, 1),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Text(
+                      'To DETI 3810-193 Aveiro',
+                      style: TextStyle(
+                          color: Colors.white,
+                          decorationColor: Colors.white,
+                          fontSize: 16),
+                    )),
+                Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(40, 40, 61, 1),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Text(
+                      'Arthur Shelby, 913 512 615',
+                      style: TextStyle(
+                          color: Colors.white,
+                          decorationColor: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    )),
               ],
             ),
           ),
@@ -207,7 +237,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
           ),
           Center(
             child: Text(
-              'Total: 34.06€',
+              'Profit: 3.06€',
               textScaleFactor: 1.0, // disables accessibility
               style: TextStyle(
                   fontSize: 18.0,

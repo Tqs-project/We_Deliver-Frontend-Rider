@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class Profile extends StatefulWidget {
-  Profile({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  Profile({Key? key}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -19,7 +17,17 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Drink Up"),
+          title: Text(
+            "We Deliver",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+
+          elevation: 0,
+          brightness: Brightness.light,
+          backgroundColor: Color.fromRGBO(40, 40, 61, 0.8),
+          //automaticallyImplyLeading: false,
         ),
         body: RiderHome(context));
   }

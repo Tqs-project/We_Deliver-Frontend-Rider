@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+
+import 'CurrentOrder.dart';
+import 'Profile.dart';
 
 class Orders extends StatefulWidget {
-  Orders({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  Orders({Key? key}) : super(key: key);
 
   @override
   _OrdersState createState() => _OrdersState();
@@ -22,7 +22,39 @@ class _OrdersState extends State<Orders> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Drink Up"),
+          title: Text(
+            "We Deliver",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.settings,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // do something
+              },
+            ),
+          ],
+          elevation: 0,
+          brightness: Brightness.light,
+          backgroundColor: Color.fromRGBO(40, 40, 61, 0.8),
+          automaticallyImplyLeading: false,
         ),
         body: PageWithOrders(context));
   }
@@ -34,14 +66,14 @@ class _OrdersState extends State<Orders> {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[OrderList(), CurrentOrder()],
+        children: <Widget>[OrderList(), CurrentSelectedOrder()],
       ),
     );
   }
 
   Widget OrderList() {
     return Container(
-      height: MediaQuery.of(context).size.height / 4,
+      height: MediaQuery.of(context).size.height / 2.3,
       alignment: Alignment.topCenter,
       margin: EdgeInsets.all(20),
       width: double.infinity,
@@ -171,7 +203,7 @@ class _OrdersState extends State<Orders> {
     );
   }
 
-  Widget CurrentOrder() {
+  Widget CurrentSelectedOrder() {
     return Container(
         alignment: Alignment.topCenter,
         margin: EdgeInsets.all(20),
@@ -194,8 +226,14 @@ class _OrdersState extends State<Orders> {
                     color: Colors.white,
                   ),
                 ),
+                // ignore: deprecated_member_use
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CurrentOrder()),
+                    );
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(80.0)),
                   padding: const EdgeInsets.all(0.0),
@@ -220,46 +258,6 @@ class _OrdersState extends State<Orders> {
               ],
             ),
             Divider(height: 10, thickness: 2, color: Colors.red[400]),
-            Container(
-              alignment: Alignment.topCenter,
-              margin: EdgeInsets.all(10),
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height / 6,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(54, 54, 82, 1),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Column(
-                children: [
-                  Text("Products",
-                      style: new TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white)),
-                  Divider(height: 5, thickness: 1, color: Colors.red[400]),
-                  Container(
-                    child: Expanded(
-                      child: ListView(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.all(12),
-                        children: <Widget>[
-                          Container(
-                            child: Text("1L Vinho do Porto",
-                                style: new TextStyle(
-                                    fontSize: 14, color: Colors.white)),
-                          ),
-                          Container(
-                              child: Text("1.5L Vodka",
-                                  style: new TextStyle(
-                                      fontSize: 14, color: Colors.white))),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(2.0),
               child: Column(
@@ -300,17 +298,20 @@ class _OrdersState extends State<Orders> {
                             )),
                       ),
                       Divider(height: 5, thickness: 5, color: Colors.red[300]),
-                      Text("Total: 31,4€",
-                          textAlign: TextAlign.right,
-                          style: new TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold))
+                      Text(
+                        'Profit: 3.06€',
+                        textAlign: TextAlign.end,
+                        style: TextStyle(
+                            color: Colors.white,
+                            decorationColor: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      )
                     ],
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ));
   }

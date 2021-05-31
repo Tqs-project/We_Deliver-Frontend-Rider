@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
+import 'Orders.dart';
+
 class Authentication extends StatefulWidget {
   Authentication({Key? key}) : super(key: key);
 
@@ -278,7 +280,12 @@ class _AuthenticationState extends State<Authentication> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: Colors.red[400],
-                    onPressed: () => {},
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Orders()),
+                      )
+                    },
                     child: Text(
                       "Register",
                       style: TextStyle(color: foregroundColor),
@@ -467,7 +474,12 @@ class _AuthenticationState extends State<Authentication> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: Colors.red[400],
-                    onPressed: () => {},
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Orders()),
+                      )
+                    },
                     child: Text(
                       "Log In",
                       style: TextStyle(color: foregroundColor),
