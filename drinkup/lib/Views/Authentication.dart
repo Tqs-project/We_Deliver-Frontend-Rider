@@ -58,7 +58,7 @@ class _AuthenticationState extends State<Authentication> {
                 children: <Widget>[
                   Container(
                     child: new Text(
-                      "Drink Up",
+                      "We Deliver",
                       style: TextStyle(
                           fontSize: 50.0,
                           fontWeight: FontWeight.w100,
@@ -367,7 +367,7 @@ class _AuthenticationState extends State<Authentication> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Drink Up",
+                      "We Deliver",
                       style: TextStyle(
                           fontSize: 50.0,
                           fontWeight: FontWeight.w100,
