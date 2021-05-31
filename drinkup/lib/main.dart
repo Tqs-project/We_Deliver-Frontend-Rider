@@ -65,20 +65,22 @@ class _MainState extends State<Main> {
         ),
         body: Center(
             child: Container(
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(31, 29, 47, 1),
-          ),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        1.05, // or use fixed size like 200
-                    height: MediaQuery.of(context).size.height / 2.2,
-                    child: gpsPage(context)),
-                OrderDetails()
-              ]),
-        )));
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(31, 29, 47, 1),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width /
+                                1.05, // or use fixed size like 200
+                            height: MediaQuery.of(context).size.height / 2.2,
+                            child: gpsPage(context)),
+                        OrderDetails(context)
+                      ]),
+                ))));
   }
 
   Widget gpsPage(BuildContext context) {
@@ -110,7 +112,7 @@ class _MainState extends State<Main> {
   }
 }
 
-Widget OrderDetails() {
+Widget OrderDetails(BuildContext context) {
   return Container(
     alignment: Alignment.topCenter,
     margin: EdgeInsets.all(20),
@@ -119,37 +121,48 @@ Widget OrderDetails() {
       color: Color.fromRGBO(40, 40, 61, 1),
       borderRadius: BorderRadius.circular(30),
     ),
-    child: SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Divider(
-            height: 20,
-            thickness: 0,
-          ),
-          Center(
-            child: Text(
-              'To Arthur Shelby',
-              textScaleFactor: 1.0, // disables accessibility
-              style: TextStyle(
-                fontSize: 30.0,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Divider(
+          height: 20,
+          thickness: 0,
+        ),
+        Center(
+          child: Text(
+            'To Arthur Shelby',
+            textScaleFactor: 1.0, // disables accessibility
+            style: TextStyle(
+                fontSize: 18.0,
                 color: Colors.white,
-              ),
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        Center(
+          child: Text(
+            'DETI 3810-193 Aveiro, 913 512 615',
+            textScaleFactor: 1.0, // disables accessibility
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.white,
             ),
           ),
-          Divider(
-            height: 20,
-            thickness: 2,
-            color: Colors.red[400],
-          ),
-          ListView(
+        ),
+        Divider(
+          height: 20,
+          thickness: 2,
+          color: Colors.red[400],
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height / 6,
+          child: ListView(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(6),
             children: <Widget>[
               Container(
-                alignment: Alignment.topRight,
-                margin: EdgeInsets.all(5.0),
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(40, 40, 61, 1),
                   borderRadius: BorderRadius.circular(30),
@@ -157,31 +170,29 @@ Widget OrderDetails() {
                 child: Text(
                   "Vinho do Porto",
                   style: TextStyle(
-                    color: Colors.white,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.white,
-                  ),
+                      color: Colors.white,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white,
+                      fontSize: 16),
                 ),
               ),
               Container(
-                alignment: Alignment.topRight,
-                margin: EdgeInsets.all(5.0),
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(40, 40, 61, 1),
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: Text(
-                  "Gin",
-                  style: TextStyle(
-                    color: Colors.white,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.white,
-                  ),
-                ),
+                child: Text("Gin",
+                    style: TextStyle(
+                        color: Colors.white,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.white,
+                        fontSize: 16)),
               ),
               Container(
-                alignment: Alignment.topRight,
-                margin: EdgeInsets.all(5.0),
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(4.0),
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(40, 40, 61, 1),
                   borderRadius: BorderRadius.circular(30),
@@ -189,16 +200,36 @@ Widget OrderDetails() {
                 child: Text(
                   "Vodka",
                   style: TextStyle(
-                    color: Colors.white,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.white,
-                  ),
+                      color: Colors.white,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white,
+                      fontSize: 16),
                 ),
               ),
             ],
           ),
-        ],
-      ),
+        ),
+        Divider(
+          height: 20,
+          thickness: 2,
+          color: Colors.red[400],
+        ),
+        Center(
+          child: Text(
+            'Total: 34.06€',
+            textScaleFactor: 1.0, // disables accessibility
+            style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        Divider(
+          height: 20,
+          thickness: 2,
+          color: Color.fromRGBO(40, 40, 61, 1),
+        ),
+      ],
     ),
   );
 }
