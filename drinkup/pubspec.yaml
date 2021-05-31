@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   toggle_switch: ^0.1.9
   fl_chart: ^0.36.1
+  font_awesome_flutter: ^9.0.0
 
 
 dev_dependencies:
