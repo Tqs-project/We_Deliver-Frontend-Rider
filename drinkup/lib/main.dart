@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,95 +33,148 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text("Drink Up"),
+        ),
         body: Container(
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(31, 29, 47, 1),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[OrderList(), CurrentOrder()],
-      ),
-    ));
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(31, 29, 47, 1),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[OrderList(), CurrentOrder()],
+          ),
+        ));
   }
 
   Widget OrderList() {
     return Container(
+      height: MediaQuery.of(context).size.height / 4,
       alignment: Alignment.topCenter,
       margin: EdgeInsets.all(20),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(111, 111, 164, 0.1),
+        color: Color.fromRGBO(40, 40, 61, 0.8),
         borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 2),
-          ),
-        ],
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: GFListTile(
-                titleText: 'Orders',
-                subTitleText: 'Accept an Order',
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+              child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              'Orders',
+              textScaleFactor: 1.0, // disables accessibility
+              style: TextStyle(
+                fontSize: 30.0,
+                color: Colors.white,
               ),
             ),
-            Divider(
-              height: 20,
-              thickness: 2,
-            ),
-            ListView(
-              scrollDirection: Axis.vertical,
+          )),
+          Divider(height: 10, thickness: 2, color: Colors.red[400]),
+          Expanded(
+            child: ListView(
               shrinkWrap: true,
-              padding: const EdgeInsets.all(8),
               children: <Widget>[
-                GFRadioListTile(
-                  titleText: 'Arthur Shelby',
-                  subTitleText: 'By order of the peaky blinders',
-                  avatar: GFAvatar(
-                    backgroundImage: AssetImage('purchase-red.jpg'),
+                GestureDetector(
+                    child: Container(
+                  margin: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.all(new Radius.circular(8)),
+                        child: Image.asset('assets/purchase-red.jpg',
+                            // width: 300,
+                            height: 40,
+                            fit: BoxFit.fill),
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            'Arthur Shelby',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'By order of the peaky blinders',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-                  size: 25,
-                  activeBorderColor: Colors.grey,
-                  radioColor: Colors.red[300],
-                  type: GFRadioType.square,
-                  value: 0,
-                  groupValue: groupValue,
-                  onChanged: (value) {
-                    setState(() {
-                      groupValue = value;
-                    });
-                  },
-                  inactiveIcon: null,
-                ),
-                GFRadioListTile(
-                  titleText: 'Arthur Shelby',
-                  subTitleText: 'By order of the peaky blinders',
-                  avatar: GFAvatar(
-                    backgroundImage: AssetImage('purchase-red.jpg'),
+                )),
+                GestureDetector(
+                    child: Container(
+                  margin: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.all(new Radius.circular(8)),
+                        child: Image.asset('assets/purchase-red.jpg',
+                            // width: 300,
+                            height: 40,
+                            fit: BoxFit.fill),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Arthur Shelby',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'By order of the peaky blinders',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-                  size: 25,
-                  activeBorderColor: Colors.grey,
-                  radioColor: Colors.red[300],
-                  type: GFRadioType.square,
-                  value: 1,
-                  groupValue: groupValue,
-                  onChanged: (value) {
-                    setState(() {
-                      groupValue = value;
-                    });
-                  },
-                  inactiveIcon: null,
-                ),
+                )),
+                GestureDetector(
+                    child: Container(
+                  margin: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.all(new Radius.circular(8)),
+                        child: Image.asset('assets/purchase-red.jpg',
+                            // width: 300,
+                            height: 40,
+                            fit: BoxFit.fill),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Arthur Shelby',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'By order of the peaky blinders',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )),
               ],
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -133,131 +185,141 @@ class _MainState extends State<Main> {
         margin: EdgeInsets.all(20),
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color.fromRGBO(111, 111, 164, 0.1),
+          color: Color.fromRGBO(40, 40, 61, 0.8),
           borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 2),
-            ),
-          ],
         ),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          GFListTile(
-            titleText: 'Current Order',
-            icon: ElevatedButton.icon(
-              onPressed: () {
-                // Respond to button press
-              },
-              icon: Icon(Icons.add, size: 18),
-              label: Text("Accept"),
-            ),
-          ),
-          Divider(
-            height: 20,
-            thickness: 2,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                    alignment: Alignment.topCenter,
-                    margin: EdgeInsets.all(20),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey[300],
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  'Current Order',
+                  textScaleFactor: 1.0, // disables accessibility
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    color: Colors.white,
+                  ),
+                ),
+                RaisedButton(
+                  onPressed: () {},
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(80.0)),
+                  padding: const EdgeInsets.all(0.0),
+                  child: Ink(
+                    decoration: const BoxDecoration(
+                      gradient:
+                          LinearGradient(colors: [Colors.red, Colors.white]),
+                      borderRadius: BorderRadius.all(Radius.circular(80.0)),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text("Order",
-                              style: new TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16)),
-                          Divider(
-                            height: 5,
-                            thickness: 5,
+                    child: Container(
+                      constraints: const BoxConstraints(
+                          minWidth: 88.0,
+                          minHeight: 36.0), // min sizes for Material buttons
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Accept',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Divider(height: 10, thickness: 2, color: Colors.red[400]),
+            Container(
+              alignment: Alignment.topCenter,
+              margin: EdgeInsets.all(10),
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height / 6,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(54, 54, 82, 1),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Column(
+                children: [
+                  Text("Products",
+                      style: new TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.white)),
+                  Divider(height: 5, thickness: 1, color: Colors.red[400]),
+                  Container(
+                    child: Expanded(
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(12),
+                        children: <Widget>[
+                          Container(
+                            child: Text("1L Vinho do Porto",
+                                style: new TextStyle(
+                                    fontSize: 14, color: Colors.white)),
                           ),
-                          ListView(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(8),
-                            children: <Widget>[
-                              GFListTile(
-                                titleText: 'Vinho do Porto',
-                                subTitleText: '1L',
-                                avatar: GFAvatar(
-                                  backgroundImage:
-                                      AssetImage('purchase-red.jpg'),
-                                ),
-                              ),
-                              GFListTile(
-                                titleText: 'Eristoff Vodka',
-                                subTitleText: '1.5L',
-                                avatar: GFAvatar(
-                                  backgroundImage:
-                                      AssetImage('purchase-red.jpg'),
-                                ),
-                              ),
-                            ],
-                          ),
+                          Container(
+                              child: Text("1.5L Vodka",
+                                  style: new TextStyle(
+                                      fontSize: 14, color: Colors.white))),
                         ],
                       ),
-                    )),
+                    ),
+                  )
+                ],
               ),
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text("User Details",
-                        style: new TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
-                    Divider(
-                      height: 5,
-                      thickness: 5,
-                    ),
-                    ListView(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.all(8),
-                      children: <Widget>[
-                        GFListTile(
-                          titleText: 'Arthur Shelby',
-                          subTitleText: '4Km Away',
-                        ),
-                        GFListTile(
-                          subTitleText: 'Address: ---------',
-                        ),
-                        GFListTile(
-                          subTitleText: 'Phone Number: 913 514 255',
-                        ),
-                        Divider(
-                          height: 5,
-                          thickness: 5,
-                        ),
-                        Text(
-                          "Total: 31,4€",
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Column(
+                children: [
+                  Text("User Details",
+                      style: new TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)),
+                  Divider(height: 5, thickness: 5, color: Colors.red[300]),
+                  ListView(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8),
+                    children: <Widget>[
+                      Container(
+                          child: Column(
+                        children: [
+                          Text('Arthur Shelby',
+                              style: new TextStyle(
+                                color: Colors.white,
+                              )),
+                          Text('4Km Away',
+                              style: new TextStyle(
+                                color: Colors.white,
+                              )),
+                        ],
+                      )),
+                      Container(
+                        child: Text('Address: ---------',
+                            style: new TextStyle(
+                              color: Colors.white,
+                            )),
+                      ),
+                      Container(
+                        child: Text('Phone Number: 913 514 255',
+                            style: new TextStyle(
+                              color: Colors.white,
+                            )),
+                      ),
+                      Divider(height: 5, thickness: 5, color: Colors.red[300]),
+                      Text("Total: 31,4€",
                           textAlign: TextAlign.right,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ))
-            ],
-          )
-        ]));
+                          style: new TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold))
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ));
   }
 }
