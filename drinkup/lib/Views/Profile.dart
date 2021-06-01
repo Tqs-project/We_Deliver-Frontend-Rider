@@ -29,7 +29,7 @@ class _ProfileState extends State<Profile> {
           backgroundColor: Color.fromRGBO(40, 40, 61, 0.8),
           //automaticallyImplyLeading: false,
         ),
-        body: RiderHome(context));
+        body: SingleChildScrollView(child: RiderHome(context)));
   }
 
   Widget RiderHome(BuildContext context) {
@@ -254,7 +254,8 @@ class _ProfileState extends State<Profile> {
                   Text("Travelled Distance",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text("19.3Km", style: TextStyle(color: Colors.white))
+                  Text("19.3Km", style: TextStyle(color: Colors.white)),
+                  
                 ],
               )),
           Divider(

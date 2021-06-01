@@ -321,23 +321,7 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          ToggleSwitch(
-            minWidth: 90.0,
-            initialLabelIndex: 1,
-            cornerRadius: 20.0,
-            activeFgColor: Colors.white,
-            inactiveBgColor: Colors.grey,
-            inactiveFgColor: Colors.white,
-            labels: ['Rider', 'Client'],
-            icons: [Icons.moped, Icons.person],
-            activeBgColors: [Colors.blue, Colors.pink],
-            onToggle: (index) {
-              if (index == 0)
-                typeOfUser = 'RIDER';
-              else
-                typeOfUser = 'CLIENT';
-            },
-          ),
+         
         ],
       ),
     );
