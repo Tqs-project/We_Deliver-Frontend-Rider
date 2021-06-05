@@ -2,14 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+import 'package:wedeliver/Blocs/LocationBloc.dart';
 
 import 'Profile.dart';
 
 class CurrentOrder extends StatefulWidget {
-  CurrentOrder({
-    Key? key,
-  }) : super(key: key);
+  CurrentOrder({Key? key}) : super(key: key);
 
   @override
   _CurrentOrderState createState() => _CurrentOrderState();
@@ -17,9 +15,7 @@ class CurrentOrder extends StatefulWidget {
 
 class _CurrentOrderState extends State<CurrentOrder> {
   final Color foregroundColor = Colors.white;
-  String typeOfTransport = "CAR";
-  var pressed = 'LOGIN';
-  var typeOfUser = 'RIDER';
+
   final casaPina = LatLng(40.643540, -8.655130);
   final universidade = LatLng(40.630690, -8.655130);
   final Map<String?, Marker> _markers = {};
@@ -85,7 +81,6 @@ class _CurrentOrderState extends State<CurrentOrder> {
           elevation: 0,
           brightness: Brightness.light,
           backgroundColor: Color.fromRGBO(40, 40, 61, 0.8),
-          //automaticallyImplyLeading: false,
         ),
         body: GPSorderPage(context));
   }
@@ -111,30 +106,47 @@ class _CurrentOrderState extends State<CurrentOrder> {
             )));
   }
 
+  var initialCameraPosition;
   Widget GpsSection(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-        alignment: Alignment.topCenter,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-        child: GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: casaPina,
-              zoom: 14,
-            ),
-            markers: _markers.values.toSet()));
+    locationBloc.calculateRoute(
+        "R. Antónia Rodrigues 36, 3800-102 Aveiro", "3810-193 Aveiro");
+    return StreamBuilder(
+        stream: locationBloc.getGpsData,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return CircularProgressIndicator();
+          var details = snapshot.data as GpsData;
+          initialCameraPosition = CameraPosition(
+            target: LatLng(details.location.lat!.toDouble(),
+                details.location.lng!.toDouble()),
+            zoom: 14,
+          );
+
+          return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+              alignment: Alignment.topCenter,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+              child: GoogleMap(
+                  myLocationEnabled: true,
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: casaPina,
+                    zoom: 14,
+                  ),
+                  markers: _markers.values.toSet(),
+                  polylines: details.route));
+        });
   }
 
   Widget OrderDetails(BuildContext context) {
