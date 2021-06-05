@@ -1,4 +1,4 @@
-package com.example.drinkup
+package com.example.wedeliver
 
 import io.flutter.embedding.android.FlutterActivity
 
