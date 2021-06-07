@@ -6,7 +6,8 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'Orders.dart';
 
 class Authentication extends StatefulWidget {
-  Authentication({Key? key}) : super(key: key);
+  Authentication(this.title);
+  String title;
 
   @override
   _AuthenticationState createState() => _AuthenticationState();
@@ -14,9 +15,13 @@ class Authentication extends StatefulWidget {
 
 class _AuthenticationState extends State<Authentication> {
   final Color foregroundColor = Colors.white;
-  String typeOfTransport = "CAR";
   var pressed = 'LOGIN';
-  var typeOfUser = 'RIDER';
+  var title = "";
+  @override
+  void initState() {
+    super.initState();
+    title = widget.title;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +63,7 @@ class _AuthenticationState extends State<Authentication> {
                 children: <Widget>[
                   Container(
                     child: new Text(
-                      "We Deliver",
+                      title,
                       style: TextStyle(
                           fontSize: 50.0,
                           fontWeight: FontWeight.w100,
@@ -276,14 +281,14 @@ class _AuthenticationState extends State<Authentication> {
             child: new Row(
               children: <Widget>[
                 new Expanded(
-                  child: new FlatButton(
+                  child: new RaisedButton(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: Colors.red[400],
                     onPressed: () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Orders()),
+                        MaterialPageRoute(builder: (context) => Orders(title)),
                       )
                     },
                     child: Text(
@@ -321,7 +326,6 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-         
         ],
       ),
     );
@@ -351,7 +355,7 @@ class _AuthenticationState extends State<Authentication> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "We Deliver",
+                      title,
                       style: TextStyle(
                           fontSize: 50.0,
                           fontWeight: FontWeight.w100,
@@ -461,7 +465,7 @@ class _AuthenticationState extends State<Authentication> {
                     onPressed: () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Orders()),
+                        MaterialPageRoute(builder: (context) => Orders(title)),
                       )
                     },
                     child: Text(

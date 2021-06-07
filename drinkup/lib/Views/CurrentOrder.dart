@@ -7,8 +7,8 @@ import 'package:wedeliver/Blocs/LocationBloc.dart';
 import 'Profile.dart';
 
 class CurrentOrder extends StatefulWidget {
-  CurrentOrder({Key? key}) : super(key: key);
-
+  CurrentOrder(this.title);
+  String title = "";
   @override
   _CurrentOrderState createState() => _CurrentOrderState();
 }
@@ -16,33 +16,11 @@ class CurrentOrder extends StatefulWidget {
 class _CurrentOrderState extends State<CurrentOrder> {
   final Color foregroundColor = Colors.white;
 
-  final casaPina = LatLng(40.643540, -8.655130);
-  final universidade = LatLng(40.630690, -8.655130);
-  final Map<String?, Marker> _markers = {};
-
-  Future<void> _onMapCreated(GoogleMapController controller) async {
-    setState(() {
-      _markers.clear();
-
-      var marker = Marker(
-        markerId: MarkerId("Casa Pina"),
-        position: LatLng(casaPina.latitude, casaPina.longitude),
-        infoWindow: InfoWindow(
-          title: "Casa Pina",
-          snippet: "R. Antónia Rodrigues 36, 3800-102 Aveiro",
-        ),
-      );
-      _markers["Casa Pina"] = marker;
-      var marker2 = Marker(
-        markerId: MarkerId("DETI"),
-        position: LatLng(universidade.latitude, universidade.longitude),
-        infoWindow: InfoWindow(
-          title: "DETI",
-          snippet: "3810-193 Aveiro",
-        ),
-      );
-      _markers["DETI"] = marker2;
-    });
+  var title = "";
+  @override
+  void initState() {
+    super.initState();
+    title = widget.title;
   }
 
   @override
@@ -50,7 +28,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "We Deliver",
+            title,
             style: TextStyle(
               color: Colors.white,
             ),
@@ -64,7 +42,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile()),
+                  MaterialPageRoute(builder: (context) => Profile(title)),
                 );
               },
             ),
@@ -108,8 +86,8 @@ class _CurrentOrderState extends State<CurrentOrder> {
 
   var initialCameraPosition;
   Widget GpsSection(BuildContext context) {
-    locationBloc.calculateRoute(
-        "R. Antónia Rodrigues 36, 3800-102 Aveiro", "3810-193 Aveiro");
+    locationBloc.calculateRoute("Casa Pina",
+        "R. Antónia Rodrigues 36, 3800-102 Aveiro", "DETI 3810-193 Aveiro");
     return StreamBuilder(
         stream: locationBloc.getGpsData,
         builder: (context, snapshot) {
@@ -139,12 +117,12 @@ class _CurrentOrderState extends State<CurrentOrder> {
               padding: const EdgeInsets.only(left: 5.0, right: 5.0),
               child: GoogleMap(
                   myLocationEnabled: true,
-                  onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
-                    target: casaPina,
-                    zoom: 14,
+                    target: LatLng(details.location.lat!.toDouble(),
+                        details.location.lng!.toDouble()),
+                    zoom: 12,
                   ),
-                  markers: _markers.values.toSet(),
+                  markers: details.markers.values.toSet(),
                   polylines: details.route));
         });
   }

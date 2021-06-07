@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class Profile extends StatefulWidget {
-  Profile({Key? key}) : super(key: key);
-
+  Profile(this.title);
+  String title;
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -12,13 +12,19 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final Color? foregroundColor = Colors.grey[200];
   String typeOfTransport = "CAR";
+  var title = "";
+  @override
+  void initState() {
+    super.initState();
+    title = widget.title;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "We Deliver",
+            title,
             style: TextStyle(
               color: Colors.white,
             ),
@@ -255,7 +261,6 @@ class _ProfileState extends State<Profile> {
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold)),
                   Text("19.3Km", style: TextStyle(color: Colors.white)),
-                  
                 ],
               )),
           Divider(

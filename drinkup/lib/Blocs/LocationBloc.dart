@@ -59,26 +59,42 @@ class LocationBloc {
     return true;
   }
 
-  Future calculateRoute(String storeQ, String destinationQ) async {
-    var addresses = await Geocoder.local.findAddressesFromQuery(storeQ);
+  Future calculateRoute(
+      String storeName, String storeAddress, String destinationAddress) async {
+    var addresses = await Geocoder.local.findAddressesFromQuery(storeAddress);
     var destinations =
-        await Geocoder.local.findAddressesFromQuery(destinationQ);
+        await Geocoder.local.findAddressesFromQuery(destinationAddress);
 
     var storeCoords = addresses.first.coordinates;
-    var store =
-        Loc.LatLng(lat: storeCoords.latitude, lng: storeCoords.longitude);
-
     var destinationCoords = destinations.first.coordinates;
-    var destination = Loc.LatLng(
-        lat: destinationCoords.latitude, lng: destinationCoords.longitude);
+
+    Map<String?, Gmap.Marker> _temp = {};
+    var marker = Gmap.Marker(
+      markerId: Gmap.MarkerId(storeName),
+      position: Gmap.LatLng(storeCoords.latitude, storeCoords.longitude),
+      infoWindow: Gmap.InfoWindow(
+        title: storeName,
+        snippet: storeAddress,
+      ),
+    );
+    _temp[storeName] = marker;
+    var marker2 = Gmap.Marker(
+      markerId: Gmap.MarkerId(destinationAddress),
+      position:
+          Gmap.LatLng(destinationCoords.latitude, destinationCoords.longitude),
+      infoWindow: Gmap.InfoWindow(
+        title: destinationAddress,
+      ),
+    );
+    _temp[destinationAddress] = marker2;
 
     String url = sprintf(
         "https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&waypoints=%s&key=%s",
         [
           location.lat.toString(),
           location.lng.toString(),
-          destinationQ,
-          storeQ,
+          destinationAddress,
+          storeAddress,
           "AIzaSyBPi7DD20WaxRNbaic5aVNwV3mbWCnioHk",
         ]);
     debugPrint(url);
@@ -96,13 +112,13 @@ class LocationBloc {
       Set<Gmap.Polyline> _polylines = {};
 
       _polylines.add(polyline);
-      update(_polylines);
+      update(_polylines, _temp);
     }
   }
 
-  void update(Set<Gmap.Polyline> route) {
-    gpsDataStreamController.sink.add(
-        GpsData(location, route)); // add whatever data we want into the Sink
+  void update(Set<Gmap.Polyline> route, Map<String?, Gmap.Marker> _markers) {
+    gpsDataStreamController.sink.add(GpsData(
+        location, route, _markers)); // add whatever data we want into the Sink
   }
 
   List<Gmap.LatLng> toLatLng(List<List<double>> points) {
@@ -120,6 +136,7 @@ final locationBloc = LocationBloc();
 class GpsData {
   Loc.LatLng location;
   Set<Gmap.Polyline> route;
+  Map<String?, Gmap.Marker> markers = {};
 
-  GpsData(this.location, this.route);
+  GpsData(this.location, this.route, this.markers);
 }

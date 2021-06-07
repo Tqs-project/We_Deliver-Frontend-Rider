@@ -20,11 +20,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     locationBloc.initialize();
     return MaterialApp(
-      title: 'Drink Up',
+      title: 'We Deliver',
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: Main(title: 'Drink Up'),
+      home: Main(title: 'We Deliver'),
     );
   }
 }
@@ -41,6 +41,6 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Authentication());
+    return Scaffold(body: Authentication("We Deliver"));
   }
 }

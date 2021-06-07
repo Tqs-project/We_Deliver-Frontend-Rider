@@ -6,24 +6,28 @@ import 'CurrentOrder.dart';
 import 'Profile.dart';
 
 class Orders extends StatefulWidget {
-  Orders({Key? key}) : super(key: key);
-
+  Orders(this.title);
+  String title;
   @override
   _OrdersState createState() => _OrdersState();
 }
 
 class _OrdersState extends State<Orders> {
   final Color foregroundColor = Colors.white;
-  String typeOfTransport = "CAR";
-  var pressed = 'LOGIN';
-  var typeOfUser = 'RIDER';
+
+  var title = "";
+  @override
+  void initState() {
+    super.initState();
+    title = widget.title;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "We Deliver",
+            title,
             style: TextStyle(
               color: Colors.white,
             ),
@@ -37,7 +41,7 @@ class _OrdersState extends State<Orders> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile()),
+                  MaterialPageRoute(builder: (context) => Profile(title)),
                 );
               },
             ),
@@ -231,7 +235,8 @@ class _OrdersState extends State<Orders> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CurrentOrder()),
+                      MaterialPageRoute(
+                          builder: (context) => CurrentOrder(title)),
                     );
                   },
                   shape: RoundedRectangleBorder(
