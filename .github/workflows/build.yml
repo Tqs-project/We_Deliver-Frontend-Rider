@@ -45,7 +45,7 @@ jobs:
       working-directory: ${{env.working-directory}}
     
     # Run widget tests for our flutter project.
-    - run: flutter test
+    - run: flutter test --no-sound-null-safety
       working-directory: ${{env.working-directory}}
     
     # Build apk.
