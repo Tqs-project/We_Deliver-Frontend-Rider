@@ -68,7 +68,7 @@ class LocationBloc {
     var storeCoords = addresses.first.coordinates;
     var destinationCoords = destinations.first.coordinates;
 
-    Map<String?, Gmap.Marker> _temp = {};
+    var _temp = <String?, Gmap.Marker>{};
     var marker = Gmap.Marker(
       markerId: Gmap.MarkerId(storeName),
       position: Gmap.LatLng(storeCoords.latitude, storeCoords.longitude),
@@ -89,19 +89,19 @@ class LocationBloc {
     _temp[destinationAddress] = marker2;
 
     String url = sprintf(
-        "https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&waypoints=%s&key=%s",
+        'https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&waypoints=%s&key=%s',
         [
           location.lat.toString(),
           location.lng.toString(),
           destinationAddress,
           storeAddress,
-          "AIzaSyBPi7DD20WaxRNbaic5aVNwV3mbWCnioHk",
+          'AIzaSyBPi7DD20WaxRNbaic5aVNwV3mbWCnioHk',
         ]);
     debugPrint(url);
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      var encoded = json.decode(response.body)["routes"][0]["overview_polyline"]
-          ["points"];
+      var encoded = json.decode(response.body)['routes'][0]['overview_polyline']
+          ['points'];
       debugPrint(encoded.toString());
       var decoded = Polyline.Decode(encodedString: encoded.toString());
 
