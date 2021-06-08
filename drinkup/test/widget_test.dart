@@ -5,6 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:wedeliver/main.dart';
@@ -15,21 +16,21 @@ void main() {
     await tester.pumpWidget(MyApp());
 
     // Verify that our counter starts at 0.
-    expect(find.text('Log In'), findsOneWidget);
     expect(find.text('Email'), findsOneWidget);
     expect(find.text('Password'), findsOneWidget);
-    expect(find.text('Register'), findsNothing);
+    expect(find.text("Don't have an account? Create One"), findsOneWidget);
+    
+    expect(find.byKey(Key('Login')), findsOneWidget);
+    expect(find.byKey(Key('GoToRegister')), findsOneWidget);
+    
+    var button =  find.byKey(Key('GoToRegister')).evaluate().first.widget as TextButton;
+    button.onPressed!();
+    await tester.pump();
 
-    // Tap the '+' icon and trigger a frame.
-    // ignore: deprecated_member_use
-    //await tester.press(find.ancestor(
-    //   of: find.text('Create One'), matching: find.byType(RaisedButton)));
-    //await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('Register'), findsOneWidget);
     expect(find.text('Email'), findsOneWidget);
     expect(find.text('Password'), findsWidgets);
-    expect(find.text('Register'), findsNothing);
+    expect(find.byKey(Key('RegisterButton')), findsOneWidget);
+    expect(find.byKey(Key('GoToLogin')), findsOneWidget);
   });
 }

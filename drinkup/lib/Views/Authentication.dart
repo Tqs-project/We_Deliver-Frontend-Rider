@@ -55,7 +55,7 @@ class _AuthenticationState extends State<Authentication> {
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: <Widget>[
-          Container(
+          Expanded(child: Container(
             padding: const EdgeInsets.only(top: 150.0, bottom: 50.0),
             child: Center(
               child: Column(
@@ -80,7 +80,7 @@ class _AuthenticationState extends State<Authentication> {
                 ],
               ),
             ),
-          ),
+          )),
           Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0),
@@ -281,10 +281,12 @@ class _AuthenticationState extends State<Authentication> {
               children: <Widget>[
                 Expanded(
                   // ignore: deprecated_member_use
-                  child: RaisedButton(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
-                    color: Colors.red[400],
+                  child: TextButton(
+                    key: Key('RegisterButton'),
+                    style: 
+                    TextButton.styleFrom(primary: Colors.red[400], padding:  const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 20.0),),
+                    
                     onPressed: () => {
                       Navigator.push(
                         context,
@@ -308,11 +310,11 @@ class _AuthenticationState extends State<Authentication> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  // ignore: deprecated_member_use
-                  child: FlatButton(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
-                    color: Colors.transparent,
+                  child: TextButton(
+                    key: Key('GoToLogin'),
+                    style: TextButton.styleFrom(primary: Colors.transparent, padding:  const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 20.0),),
+                    
                     onPressed: () => {
                       setState(() {
                         pressed = 'LOGIN';
@@ -461,6 +463,7 @@ class _AuthenticationState extends State<Authentication> {
                 Expanded(
                   // ignore: deprecated_member_use
                   child: FlatButton(
+                    key: Key('Login'),
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: Colors.red[400],
@@ -509,11 +512,12 @@ class _AuthenticationState extends State<Authentication> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  // ignore: deprecated_member_use
-                  child: FlatButton(
+                  child: TextButton(
+                    key: Key('GoToRegister'),
+                    style: TextButton.styleFrom( 
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
-                    color: Colors.transparent,
+                    backgroundColor: Colors.transparent,),
                     onPressed: () => {
                       setState(() {
                         pressed = 'REGISTER';
