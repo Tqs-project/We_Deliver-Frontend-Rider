@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
+// ignore: must_be_immutable
 class Profile extends StatefulWidget {
   Profile(this.title);
   String title;
@@ -11,8 +12,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final Color? foregroundColor = Colors.grey[200];
-  String typeOfTransport = "CAR";
-  var title = "";
+  String typeOfTransport = 'CAR';
+  var title = '';
   @override
   void initState() {
     super.initState();
@@ -58,19 +59,14 @@ class _ProfileState extends State<Profile> {
       margin: EdgeInsets.all(10),
       height: (MediaQuery.of(context).size.height) / 1.7,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(new Radius.circular(8)),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
         color: Color.fromRGBO(40, 40, 61, 0.8),
       ),
       child: ListView(
         children: [
           Hero(
-              tag: "Profile Picture",
+              tag: 'Profile Picture',
               child: Container(
-                child: Icon(
-                  Icons.person,
-                  size: 96,
-                  color: Colors.white,
-                ),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.red,
@@ -79,9 +75,14 @@ class _ProfileState extends State<Profile> {
                   shape: BoxShape.circle,
                   //image: DecorationImage(image: this.logo)
                 ),
+                child: Icon(
+                  Icons.person,
+                  size: 96,
+                  color: Colors.white,
+                ),
               )),
           Hero(
-            tag: "Harry Potter",
+            tag: 'Harry Potter',
             child: Material(
               type: MaterialType.transparency,
               child: Padding(
@@ -89,7 +90,7 @@ class _ProfileState extends State<Profile> {
                 child: Center(
                   child: TextFormField(
                     textAlign: TextAlign.center,
-                    initialValue: "Harry Potter",
+                    initialValue: 'Harry Potter',
                     style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
                 ),
@@ -105,7 +106,7 @@ class _ProfileState extends State<Profile> {
                 child: Icon(Icons.location_city, color: Colors.red),
               ),
             ),
-            initialValue: "Privet Drive",
+            initialValue: 'Privet Drive',
             style: TextStyle(color: Colors.white),
           ),
           TextFormField(
@@ -117,7 +118,7 @@ class _ProfileState extends State<Profile> {
                 child: Icon(Icons.email, color: Colors.red),
               ),
             ),
-            initialValue: "hp@hogwarts.com",
+            initialValue: 'hp@hogwarts.com',
             style: TextStyle(color: Colors.white),
           ),
           TextFormField(
@@ -129,7 +130,7 @@ class _ProfileState extends State<Profile> {
                 child: Icon(Icons.phone, color: Colors.red),
               ),
             ),
-            initialValue: "913 415 285",
+            initialValue: '913 415 285',
             style: TextStyle(color: Colors.white),
           ),
           Divider(
@@ -155,14 +156,16 @@ class _ProfileState extends State<Profile> {
                 Color.fromRGBO(233, 86, 83, 1),
               ],
               onToggle: (index) {
-                if (index == 0)
+                if (index == 0) {
                   typeOfTransport = 'RIDER';
-                else
+                } else {
                   typeOfTransport = 'CLIENT';
+                }
               },
             ),
           ),
           Center(
+              // ignore: deprecated_member_use
               child: RaisedButton(
             onPressed: () {},
             shape: RoundedRectangleBorder(
@@ -198,20 +201,20 @@ class _ProfileState extends State<Profile> {
       margin: EdgeInsets.all(10),
       height: (MediaQuery.of(context).size.height) / 2,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(new Radius.circular(8)),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
         color: Color.fromRGBO(40, 40, 61, 0.8),
       ),
       child: ListView(
         children: [
           Hero(
-            tag: "Statistics",
+            tag: 'Statistics',
             child: Material(
               type: MaterialType.transparency,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Center(
                   child: Text(
-                    "Statistics (Today)",
+                    'Statistics (Today)',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
@@ -233,10 +236,10 @@ class _ProfileState extends State<Profile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Number Of Orders Accepted",
+                  Text('Number Of Orders Accepted',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text("12", style: TextStyle(color: Colors.white))
+                  Text('12', style: TextStyle(color: Colors.white))
                 ],
               )),
           Container(
@@ -245,10 +248,10 @@ class _ProfileState extends State<Profile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Total Profit",
+                  Text('Total Profit',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text("43€", style: TextStyle(color: Colors.white))
+                  Text('43€', style: TextStyle(color: Colors.white))
                 ],
               )),
           Container(
@@ -257,10 +260,10 @@ class _ProfileState extends State<Profile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Travelled Distance",
+                  Text('Travelled Distance',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text("19.3Km", style: TextStyle(color: Colors.white)),
+                  Text('19.3Km', style: TextStyle(color: Colors.white)),
                 ],
               )),
           Divider(

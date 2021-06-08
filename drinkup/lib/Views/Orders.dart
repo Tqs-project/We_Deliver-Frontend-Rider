@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'CurrentOrder.dart';
 import 'Profile.dart';
 
+// ignore: must_be_immutable
 class Orders extends StatefulWidget {
   Orders(this.title);
   String title;
@@ -15,7 +16,7 @@ class Orders extends StatefulWidget {
 class _OrdersState extends State<Orders> {
   final Color foregroundColor = Colors.white;
 
-  var title = "";
+  var title = '';
   @override
   void initState() {
     super.initState();
@@ -112,7 +113,7 @@ class _OrdersState extends State<Orders> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.all(new Radius.circular(8)),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                         child: Image.asset('assets/purchase-red.jpg',
                             // width: 300,
                             height: 40,
@@ -144,7 +145,7 @@ class _OrdersState extends State<Orders> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.all(new Radius.circular(8)),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                         child: Image.asset('assets/purchase-red.jpg',
                             // width: 300,
                             height: 40,
@@ -175,7 +176,7 @@ class _OrdersState extends State<Orders> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.all(new Radius.circular(8)),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                         child: Image.asset('assets/purchase-red.jpg',
                             // width: 300,
                             height: 40,
@@ -267,8 +268,8 @@ class _OrdersState extends State<Orders> {
               padding: const EdgeInsets.all(2.0),
               child: Column(
                 children: [
-                  Text("User Details",
-                      style: new TextStyle(
+                  Text('User Details',
+                      style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16)),
@@ -281,24 +282,24 @@ class _OrdersState extends State<Orders> {
                           child: Column(
                         children: [
                           Text('Arthur Shelby',
-                              style: new TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                               )),
                           Text('4Km Away',
-                              style: new TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                               )),
                         ],
                       )),
                       Container(
                         child: Text('Address: ---------',
-                            style: new TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                             )),
                       ),
                       Container(
                         child: Text('Phone Number: 913 514 255',
-                            style: new TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                             )),
                       ),

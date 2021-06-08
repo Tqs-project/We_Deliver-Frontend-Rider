@@ -6,9 +6,10 @@ import 'package:wedeliver/Blocs/LocationBloc.dart';
 
 import 'Profile.dart';
 
+// ignore: must_be_immutable
 class CurrentOrder extends StatefulWidget {
   CurrentOrder(this.title);
-  String title = "";
+  String title;
   @override
   _CurrentOrderState createState() => _CurrentOrderState();
 }
@@ -16,7 +17,7 @@ class CurrentOrder extends StatefulWidget {
 class _CurrentOrderState extends State<CurrentOrder> {
   final Color foregroundColor = Colors.white;
 
-  var title = "";
+  var title = '';
   @override
   void initState() {
     super.initState();
@@ -86,8 +87,8 @@ class _CurrentOrderState extends State<CurrentOrder> {
 
   var initialCameraPosition;
   Widget GpsSection(BuildContext context) {
-    locationBloc.calculateRoute("Casa Pina",
-        "R. Antónia Rodrigues 36, 3800-102 Aveiro", "DETI 3810-193 Aveiro");
+    locationBloc.calculateRoute('Casa Pina',
+        'R. Antónia Rodrigues 36, 3800-102 Aveiro', 'DETI 3810-193 Aveiro');
     return StreamBuilder(
         stream: locationBloc.getGpsData,
         builder: (context, snapshot) {
@@ -181,7 +182,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
-                      "From Casa Pina, R. Antónia Rodrigues 36, 3800-102 Aveiro",
+                      'From Casa Pina, R. Antónia Rodrigues 36, 3800-102 Aveiro',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
