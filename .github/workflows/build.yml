@@ -31,7 +31,8 @@ jobs:
         # flutter-version: '1.12.x' # you can also specify exact version of flutter
     
 
-    - run: ls
+    - name: ls-LS
+      run: ls
       working-directory: ${{env.working-directory}}
     # Get flutter dependencies.
     - run: flutter pub get
