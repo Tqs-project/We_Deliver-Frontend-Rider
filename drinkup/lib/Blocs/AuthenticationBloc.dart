@@ -4,15 +4,15 @@ import 'package:http/http.dart' show Client, Response;
 import 'dart:io';
 
 import 'package:wedeliver/Entities/LoginData.dart';
+import 'package:wedeliver/Entities/Rider.dart';
 
-class AuthenticationBloc{
-  StreamController<LoginData> loginStreamController = StreamController<LoginData>.broadcast();
-  Stream get getLoginStream=> loginStreamController.stream;
+class AuthenticationBloc {
+  StreamController<LoginData> loginStreamController =
+      StreamController<LoginData>.broadcast();
+  Stream get getLoginStream => loginStreamController.stream;
   final String BASE_URL = 'webmarket-314811.oa.r.appspot.com';
-  Client client = Client();
 
-
-  Future<LoginData> register(String username, String password, String email, String phonenumber, String vehiclePlate) async {
+  Future<Response> register(Rider rider, Client client) async {
     var uri = Uri.https(BASE_URL, ('/api/riders'));
     final response = await client.post(uri,
         headers: {
@@ -21,23 +21,22 @@ class AuthenticationBloc{
         },
         body: jsonEncode({
           'user': {
-            'username': username,
-            'email': email,
+            'username': rider.username,
+            'email': rider.email,
             'role': 'RIDER',
-            'password': password,
-            'phoneNumber': phonenumber
+            'password': rider.password,
+            'phoneNumber': rider.phonenumber
           },
-          'vehiclePlate': vehiclePlate
+          'vehiclePlate': rider.vehiclePlate
         }));
 
-
     if (response.statusCode == 201) {
-      return await login(email, password);
+      return response;
     }
-    return LoginData('','Failed To Register User');
+    return response;
   }
 
-  Future<LoginData> login(String email, String password) async {
+  Future<LoginData> login(Rider rider, Client client) async {
     var uri = Uri.https(BASE_URL, ('/api/riders/login'));
     final response = await client.post(uri,
         headers: {
@@ -46,17 +45,20 @@ class AuthenticationBloc{
         },
         body: jsonEncode({
           'user': {
-            'email': email,
-            'password': password,
+            'email': rider.email,
+            'password': rider.password,
           }
         }));
-        var _temp = LoginData(jsonDecode(response.body)['token'], jsonDecode(response.body)['errorMessage'] );
+    var _temp = LoginData(jsonDecode(response.body)['token'],
+        jsonDecode(response.body)['errorMessage']);
 
     update(_temp);
     return _temp;
   }
-  void update(LoginData newdata){
+
+  void update(LoginData newdata) {
     loginStreamController.sink.add(newdata);
   }
-} 
+}
+
 final authBloc = AuthenticationBloc();

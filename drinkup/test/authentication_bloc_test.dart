@@ -5,41 +5,37 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'dart:convert';
-import 'dart:html';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:http/http.dart';
-import 'package:wedeliver/Entities/LoginData.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart' as ft_test;
+import 'package:mockito/annotations.dart';
+import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
+import 'package:wedeliver/Entities/Rider.dart';
 
-import 'package:wedeliver/main.dart';
-
-class MockClient extends Mock implements Client {}
+final String BASE_URL = 'webmarket-314811.oa.r.appspot.com';
+@GenerateMocks([http.Client])
 void main() {
-  final client = MockClient();
-  test('test login', () {
+  final testRider =
+      Rider('username', 'password', 'email', 'phonenumber', 'licenseplate');
 
-    when(client.post(Uri.parse('webmarket-314811.oa.r.appspot.com/api/riders')))
-        .thenAnswer((_) async => Response('Created', 201));
+  test('test login', () async {
+    var client = ft_test.MockClient((request) async {
+      return http.Response('Created', 201);
+    });
+    final authBlocMock = AuthenticationBloc();
 
-    when(client.post(Uri.parse('webmarket-314811.oa.r.appspot.com/api/riders/login')))
-        .thenAnswer((_) async=> Response('{"toker":"TOKEN", "errorMessage": "ERROR"}',200));
+    var response = await authBlocMock.register(testRider, client);
+    expect(response.statusCode, equals(201));
+  });
 
-    expect(find.byKey(Key('Login')), findsOneWidget);
-    expect(find.byKey(Key('GoToRegister')), findsOneWidget);
-    
-    var button =  find.byKey(Key('GoToRegister')).evaluate().first.widget as TextButton;
-    button.onPressed!();
-    await tester.pump();
+  test('test register', () async {
+    var client = ft_test.MockClient((request) async {
+      return http.Response('{"token":"TOKEN", "errorMessage":"ERROR"}', 200);
+    });
+    final authBlocMock = AuthenticationBloc();
 
-
-    expect(find.text('Email'), findsOneWidget);
-    expect(find.text('Password'), findsWidgets);
-    expect(find.byKey(Key('RegisterButton')), findsOneWidget);
-    expect(find.byKey(Key('GoToLogin')), findsOneWidget);
-  
-    
+    var response = await authBlocMock.login(testRider, client);
+    expect(response.token, equals('TOKEN'));
+    expect(response.error, equals('ERROR'));
   });
 }
