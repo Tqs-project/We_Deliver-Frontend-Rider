@@ -5,25 +5,30 @@ import 'package:flutter/material.dart';
 import 'CurrentOrder.dart';
 import 'Profile.dart';
 
+// ignore: must_be_immutable
 class Orders extends StatefulWidget {
-  Orders({Key? key}) : super(key: key);
-
+  Orders(this.title);
+  String title;
   @override
   _OrdersState createState() => _OrdersState();
 }
 
 class _OrdersState extends State<Orders> {
   final Color foregroundColor = Colors.white;
-  String typeOfTransport = "CAR";
-  var pressed = 'LOGIN';
-  var typeOfUser = 'RIDER';
+
+  var title = '';
+  @override
+  void initState() {
+    super.initState();
+    title = widget.title;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "We Deliver",
+            title,
             style: TextStyle(
               color: Colors.white,
             ),
@@ -37,7 +42,7 @@ class _OrdersState extends State<Orders> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile()),
+                  MaterialPageRoute(builder: (context) => Profile(title)),
                 );
               },
             ),
@@ -108,7 +113,7 @@ class _OrdersState extends State<Orders> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.all(new Radius.circular(8)),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                         child: Image.asset('assets/purchase-red.jpg',
                             // width: 300,
                             height: 40,
@@ -140,7 +145,7 @@ class _OrdersState extends State<Orders> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.all(new Radius.circular(8)),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                         child: Image.asset('assets/purchase-red.jpg',
                             // width: 300,
                             height: 40,
@@ -171,7 +176,7 @@ class _OrdersState extends State<Orders> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.all(new Radius.circular(8)),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
                         child: Image.asset('assets/purchase-red.jpg',
                             // width: 300,
                             height: 40,
@@ -231,7 +236,8 @@ class _OrdersState extends State<Orders> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CurrentOrder()),
+                      MaterialPageRoute(
+                          builder: (context) => CurrentOrder(title)),
                     );
                   },
                   shape: RoundedRectangleBorder(
@@ -262,8 +268,8 @@ class _OrdersState extends State<Orders> {
               padding: const EdgeInsets.all(2.0),
               child: Column(
                 children: [
-                  Text("User Details",
-                      style: new TextStyle(
+                  Text('User Details',
+                      style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16)),
@@ -276,24 +282,24 @@ class _OrdersState extends State<Orders> {
                           child: Column(
                         children: [
                           Text('Arthur Shelby',
-                              style: new TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                               )),
                           Text('4Km Away',
-                              style: new TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                               )),
                         ],
                       )),
                       Container(
                         child: Text('Address: ---------',
-                            style: new TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                             )),
                       ),
                       Container(
                         child: Text('Phone Number: 913 514 255',
-                            style: new TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                             )),
                       ),

@@ -2,51 +2,26 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+import 'package:wedeliver/Blocs/LocationBloc.dart';
 
 import 'Profile.dart';
 
+// ignore: must_be_immutable
 class CurrentOrder extends StatefulWidget {
-  CurrentOrder({
-    Key? key,
-  }) : super(key: key);
-
+  CurrentOrder(this.title);
+  String title;
   @override
   _CurrentOrderState createState() => _CurrentOrderState();
 }
 
 class _CurrentOrderState extends State<CurrentOrder> {
   final Color foregroundColor = Colors.white;
-  String typeOfTransport = "CAR";
-  var pressed = 'LOGIN';
-  var typeOfUser = 'RIDER';
-  final casaPina = LatLng(40.643540, -8.655130);
-  final universidade = LatLng(40.630690, -8.655130);
-  final Map<String?, Marker> _markers = {};
 
-  Future<void> _onMapCreated(GoogleMapController controller) async {
-    setState(() {
-      _markers.clear();
-
-      var marker = Marker(
-        markerId: MarkerId("Casa Pina"),
-        position: LatLng(casaPina.latitude, casaPina.longitude),
-        infoWindow: InfoWindow(
-          title: "Casa Pina",
-          snippet: "R. Antónia Rodrigues 36, 3800-102 Aveiro",
-        ),
-      );
-      _markers["Casa Pina"] = marker;
-      var marker2 = Marker(
-        markerId: MarkerId("DETI"),
-        position: LatLng(universidade.latitude, universidade.longitude),
-        infoWindow: InfoWindow(
-          title: "DETI",
-          snippet: "3810-193 Aveiro",
-        ),
-      );
-      _markers["DETI"] = marker2;
-    });
+  var title = '';
+  @override
+  void initState() {
+    super.initState();
+    title = widget.title;
   }
 
   @override
@@ -54,7 +29,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "We Deliver",
+            title,
             style: TextStyle(
               color: Colors.white,
             ),
@@ -68,7 +43,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile()),
+                  MaterialPageRoute(builder: (context) => Profile(title)),
                 );
               },
             ),
@@ -85,7 +60,6 @@ class _CurrentOrderState extends State<CurrentOrder> {
           elevation: 0,
           brightness: Brightness.light,
           backgroundColor: Color.fromRGBO(40, 40, 61, 0.8),
-          //automaticallyImplyLeading: false,
         ),
         body: GPSorderPage(context));
   }
@@ -111,30 +85,47 @@ class _CurrentOrderState extends State<CurrentOrder> {
             )));
   }
 
+  var initialCameraPosition;
   Widget GpsSection(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-        alignment: Alignment.topCenter,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-        child: GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: casaPina,
-              zoom: 14,
-            ),
-            markers: _markers.values.toSet()));
+    locationBloc.calculateRoute('Casa Pina',
+        'R. Antónia Rodrigues 36, 3800-102 Aveiro', 'DETI 3810-193 Aveiro');
+    return StreamBuilder(
+        stream: locationBloc.getGpsData,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return CircularProgressIndicator();
+          var details = snapshot.data as GpsData;
+          initialCameraPosition = CameraPosition(
+            target: LatLng(details.location.lat!.toDouble(),
+                details.location.lng!.toDouble()),
+            zoom: 14,
+          );
+
+          return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+              alignment: Alignment.topCenter,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+              child: GoogleMap(
+                  myLocationEnabled: true,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(details.location.lat!.toDouble(),
+                        details.location.lng!.toDouble()),
+                    zoom: 12,
+                  ),
+                  markers: details.markers.values.toSet(),
+                  polylines: details.route));
+        });
   }
 
   Widget OrderDetails(BuildContext context) {
@@ -191,7 +182,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
-                      "From Casa Pina, R. Antónia Rodrigues 36, 3800-102 Aveiro",
+                      'From Casa Pina, R. Antónia Rodrigues 36, 3800-102 Aveiro',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,

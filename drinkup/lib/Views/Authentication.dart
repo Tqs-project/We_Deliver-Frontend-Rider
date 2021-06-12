@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-
 import 'Orders.dart';
 
+// ignore: must_be_immutable
 class Authentication extends StatefulWidget {
-  Authentication({Key? key}) : super(key: key);
+  Authentication(this.title);
+  String title;
 
   @override
   _AuthenticationState createState() => _AuthenticationState();
@@ -14,9 +14,13 @@ class Authentication extends StatefulWidget {
 
 class _AuthenticationState extends State<Authentication> {
   final Color foregroundColor = Colors.white;
-  String typeOfTransport = "CAR";
   var pressed = 'LOGIN';
-  var typeOfUser = 'RIDER';
+  var title = '';
+  @override
+  void initState() {
+    super.initState();
+    title = widget.title;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +40,11 @@ class _AuthenticationState extends State<Authentication> {
 
   Widget RegisterPage() {
     return Container(
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
           begin: Alignment.centerLeft,
-          end: new Alignment(
-              1.0, 0.0), // 10% of the width, so there are ten blinds.
+          end:
+              Alignment(1.0, 0.0), // 10% of the width, so there are ten blinds.
           colors: [
             Color.fromRGBO(31, 29, 47, 1),
             Color.fromRGBO(31, 29, 47, 0.9),
@@ -51,19 +55,12 @@ class _AuthenticationState extends State<Authentication> {
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: <Widget>[
-          Container(
+          Expanded(child: Container(
             padding: const EdgeInsets.only(top: 150.0, bottom: 50.0),
             child: Center(
-              child: new Column(
+              child: Column(
                 children: <Widget>[
                   Container(
-                    child: new Text(
-                      "We Deliver",
-                      style: TextStyle(
-                          fontSize: 50.0,
-                          fontWeight: FontWeight.w100,
-                          color: Colors.white),
-                    ),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: foregroundColor,
@@ -72,12 +69,19 @@ class _AuthenticationState extends State<Authentication> {
                       shape: BoxShape.circle,
                       //image: DecorationImage(image: this.logo)
                     ),
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: 50.0,
+                          fontWeight: FontWeight.w100,
+                          color: Colors.white),
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-          new Container(
+          )),
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0),
             alignment: Alignment.center,
@@ -90,11 +94,11 @@ class _AuthenticationState extends State<Authentication> {
               ),
             ),
             padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Padding(
+                Padding(
                   padding:
                       EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
                   child: Icon(
@@ -102,7 +106,7 @@ class _AuthenticationState extends State<Authentication> {
                     color: foregroundColor,
                   ),
                 ),
-                new Expanded(
+                Expanded(
                   child: TextField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
@@ -115,7 +119,7 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0),
             alignment: Alignment.center,
@@ -128,11 +132,11 @@ class _AuthenticationState extends State<Authentication> {
               ),
             ),
             padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Padding(
+                Padding(
                   padding:
                       EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
                   child: Icon(
@@ -140,7 +144,7 @@ class _AuthenticationState extends State<Authentication> {
                     color: foregroundColor,
                   ),
                 ),
-                new Expanded(
+                Expanded(
                   child: TextField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
@@ -153,7 +157,7 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
             alignment: Alignment.center,
@@ -166,11 +170,11 @@ class _AuthenticationState extends State<Authentication> {
               ),
             ),
             padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Padding(
+                Padding(
                   padding:
                       EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
                   child: Icon(
@@ -178,7 +182,7 @@ class _AuthenticationState extends State<Authentication> {
                     color: foregroundColor,
                   ),
                 ),
-                new Expanded(
+                Expanded(
                   child: TextField(
                     obscureText: true,
                     textAlign: TextAlign.center,
@@ -192,7 +196,7 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
             alignment: Alignment.center,
@@ -205,11 +209,11 @@ class _AuthenticationState extends State<Authentication> {
               ),
             ),
             padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Padding(
+                Padding(
                   padding:
                       EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
                   child: Icon(
@@ -217,7 +221,7 @@ class _AuthenticationState extends State<Authentication> {
                     color: foregroundColor,
                   ),
                 ),
-                new Expanded(
+                Expanded(
                   child: TextField(
                     obscureText: true,
                     textAlign: TextAlign.center,
@@ -231,7 +235,7 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
             alignment: Alignment.center,
@@ -244,11 +248,11 @@ class _AuthenticationState extends State<Authentication> {
               ),
             ),
             padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Padding(
+                Padding(
                   padding:
                       EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
                   child: Icon(
@@ -256,7 +260,7 @@ class _AuthenticationState extends State<Authentication> {
                     color: foregroundColor,
                   ),
                 ),
-                new Expanded(
+                Expanded(
                   child: TextField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
@@ -269,25 +273,28 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 30.0),
             alignment: Alignment.center,
-            child: new Row(
+            child: Row(
               children: <Widget>[
-                new Expanded(
-                  child: new FlatButton(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
-                    color: Colors.red[400],
+                Expanded(
+                  // ignore: deprecated_member_use
+                  child: TextButton(
+                    key: Key('RegisterButton'),
+                    style: 
+                    TextButton.styleFrom(primary: Colors.red[400], padding:  const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 20.0),),
+                    
                     onPressed: () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Orders()),
+                        MaterialPageRoute(builder: (context) => Orders(title)),
                       )
                     },
                     child: Text(
-                      "Register",
+                      'Register',
                       style: TextStyle(color: foregroundColor),
                     ),
                   ),
@@ -295,25 +302,26 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(
                 left: 40.0, right: 40.0, top: 10.0, bottom: 20.0),
             alignment: Alignment.center,
-            child: new Row(
+            child: Row(
               children: <Widget>[
-                new Expanded(
-                  child: new FlatButton(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
-                    color: Colors.transparent,
+                Expanded(
+                  child: TextButton(
+                    key: Key('GoToLogin'),
+                    style: TextButton.styleFrom(primary: Colors.transparent, padding:  const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 20.0),),
+                    
                     onPressed: () => {
                       setState(() {
-                        pressed = "LOGIN";
+                        pressed = 'LOGIN';
                       })
                     },
                     child: Text(
-                      "Already have an account? Log In",
+                      'Already have an account? Log In',
                       style: TextStyle(color: foregroundColor.withOpacity(0.5)),
                     ),
                   ),
@@ -321,7 +329,6 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-         
         ],
       ),
     );
@@ -329,11 +336,11 @@ class _AuthenticationState extends State<Authentication> {
 
   Widget LoginPage() {
     return Container(
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
           begin: Alignment.centerLeft,
-          end: new Alignment(
-              1.0, 0.0), // 10% of the width, so there are ten blinds.
+          end:
+              Alignment(1.0, 0.0), // 10% of the width, so there are ten blinds.
           colors: [
             Color.fromRGBO(31, 29, 47, 1),
             Color.fromRGBO(31, 29, 47, 0.9),
@@ -347,16 +354,9 @@ class _AuthenticationState extends State<Authentication> {
           Container(
             padding: const EdgeInsets.only(top: 150.0, bottom: 50.0),
             child: Center(
-              child: new Column(
+              child: Column(
                 children: <Widget>[
                   Container(
-                    child: Text(
-                      "We Deliver",
-                      style: TextStyle(
-                          fontSize: 50.0,
-                          fontWeight: FontWeight.w100,
-                          color: Colors.white),
-                    ),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: foregroundColor,
@@ -365,12 +365,19 @@ class _AuthenticationState extends State<Authentication> {
                       shape: BoxShape.circle,
                       //image: DecorationImage(image: this.logo)
                     ),
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: 50.0,
+                          fontWeight: FontWeight.w100,
+                          color: Colors.white),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0),
             alignment: Alignment.center,
@@ -383,11 +390,11 @@ class _AuthenticationState extends State<Authentication> {
               ),
             ),
             padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Padding(
+                Padding(
                   padding:
                       EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
                   child: Icon(
@@ -395,7 +402,7 @@ class _AuthenticationState extends State<Authentication> {
                     color: foregroundColor,
                   ),
                 ),
-                new Expanded(
+                Expanded(
                   child: TextField(
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
@@ -408,7 +415,7 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
             alignment: Alignment.center,
@@ -421,11 +428,11 @@ class _AuthenticationState extends State<Authentication> {
               ),
             ),
             padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: new Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Padding(
+                Padding(
                   padding:
                       EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
                   child: Icon(
@@ -433,7 +440,7 @@ class _AuthenticationState extends State<Authentication> {
                     color: foregroundColor,
                   ),
                 ),
-                new Expanded(
+                Expanded(
                   child: TextField(
                     obscureText: true,
                     textAlign: TextAlign.center,
@@ -447,25 +454,27 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 30.0),
             alignment: Alignment.center,
-            child: new Row(
+            child: Row(
               children: <Widget>[
-                new Expanded(
-                  child: new FlatButton(
+                Expanded(
+                  // ignore: deprecated_member_use
+                  child: FlatButton(
+                    key: Key('Login'),
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: Colors.red[400],
                     onPressed: () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Orders()),
+                        MaterialPageRoute(builder: (context) => Orders(title)),
                       )
                     },
                     child: Text(
-                      "Log In",
+                      'Log In',
                       style: TextStyle(color: foregroundColor),
                     ),
                   ),
@@ -473,20 +482,21 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
             alignment: Alignment.center,
-            child: new Row(
+            child: Row(
               children: <Widget>[
-                new Expanded(
-                  child: new FlatButton(
+                Expanded(
+                  // ignore: deprecated_member_use
+                  child: FlatButton(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: Colors.transparent,
                     onPressed: () => {},
                     child: Text(
-                      "Forgot your password?",
+                      'Forgot your password?',
                       style: TextStyle(color: foregroundColor.withOpacity(0.5)),
                     ),
                   ),
@@ -494,21 +504,23 @@ class _AuthenticationState extends State<Authentication> {
               ],
             ),
           ),
-          new Container(
+          Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(
                 left: 40.0, right: 40.0, top: 10.0, bottom: 20.0),
             alignment: Alignment.center,
-            child: new Row(
+            child: Row(
               children: <Widget>[
-                new Expanded(
-                  child: new FlatButton(
+                Expanded(
+                  child: TextButton(
+                    key: Key('GoToRegister'),
+                    style: TextButton.styleFrom( 
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
-                    color: Colors.transparent,
+                    backgroundColor: Colors.transparent,),
                     onPressed: () => {
                       setState(() {
-                        pressed = "REGISTER";
+                        pressed = 'REGISTER';
                       })
                     },
                     child: Text(
