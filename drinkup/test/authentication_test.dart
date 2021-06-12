@@ -7,11 +7,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:http/http.dart' show Client;
 
 import 'package:wedeliver/main.dart';
-
+class MockClient extends Mock implements Client {}
 void main() {
-  testWidgets('Authentication Test', (WidgetTester tester) async {
+
+  
+  testWidgets('Authentication Frontend Test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 
@@ -32,5 +36,7 @@ void main() {
     expect(find.text('Password'), findsWidgets);
     expect(find.byKey(Key('RegisterButton')), findsOneWidget);
     expect(find.byKey(Key('GoToLogin')), findsOneWidget);
+  
+    
   });
 }
