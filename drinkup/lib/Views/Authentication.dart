@@ -1,6 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
+import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
+import 'package:wedeliver/Entities/LoginData.dart';
+import 'package:wedeliver/Entities/Rider.dart';
 import 'Orders.dart';
 
 // ignore: must_be_immutable
@@ -16,6 +21,19 @@ class _AuthenticationState extends State<Authentication> {
   final Color foregroundColor = Colors.white;
   var pressed = 'LOGIN';
   var title = '';
+  var token = '';
+
+  var client = Client();
+  //TextField Controllers
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmController = TextEditingController();
+  final phonenumberController = TextEditingController();
+  final vehiclePlateController = TextEditingController();
+
+  var email, password, vehiclePlate, phoneNumber, username;
+
   @override
   void initState() {
     super.initState();
@@ -28,14 +46,38 @@ class _AuthenticationState extends State<Authentication> {
   }
 
   Widget Authentication(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          pressed == 'LOGIN' ? LoginPage() : RegisterPage(),
-        ],
-      ),
-    );
+    return StreamBuilder(
+        stream: authBloc.getLoginStream,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            var data = snapshot.data as LoginData;
+            if (data.token.isNotEmpty) {
+              Future.delayed(Duration.zero, () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Orders(title)),
+                );
+              });
+            } else {
+              Fluttertoast.showToast(
+                  msg: data.error,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.white,
+                  textColor: Colors.black,
+                  fontSize: 16.0);
+            }
+          }
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                pressed == 'LOGIN' ? LoginPage() : RegisterPage(),
+              ],
+            ),
+          );
+        });
   }
 
   Widget RegisterPage() {
@@ -55,7 +97,8 @@ class _AuthenticationState extends State<Authentication> {
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: <Widget>[
-          Expanded(child: Container(
+          Expanded(
+              child: Container(
             padding: const EdgeInsets.only(top: 150.0, bottom: 50.0),
             child: Center(
               child: Column(
@@ -108,6 +151,7 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 Expanded(
                   child: TextField(
+                    controller: emailController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -147,6 +191,7 @@ class _AuthenticationState extends State<Authentication> {
                 Expanded(
                   child: TextField(
                     textAlign: TextAlign.center,
+                    controller: usernameController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Name',
@@ -184,6 +229,7 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 Expanded(
                   child: TextField(
+                    controller: passwordController,
                     obscureText: true,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
@@ -223,6 +269,7 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 Expanded(
                   child: TextField(
+                    controller: confirmController,
                     obscureText: true,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
@@ -256,16 +303,56 @@ class _AuthenticationState extends State<Authentication> {
                   padding:
                       EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
                   child: Icon(
-                    Icons.location_city,
+                    Icons.phone,
                     color: foregroundColor,
                   ),
                 ),
                 Expanded(
                   child: TextField(
+                    controller: phonenumberController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'City',
+                      hintText: 'Phone Number',
+                      hintStyle: TextStyle(color: foregroundColor),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                    color: foregroundColor,
+                    width: 0.5,
+                    style: BorderStyle.solid),
+              ),
+            ),
+            padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Padding(
+                  padding:
+                      EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
+                  child: Icon(
+                    Icons.car_rental,
+                    color: foregroundColor,
+                  ),
+                ),
+                Expanded(
+                  child: TextField(
+                    controller: vehiclePlateController,
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'License Plate',
                       hintStyle: TextStyle(color: foregroundColor),
                     ),
                   ),
@@ -283,16 +370,12 @@ class _AuthenticationState extends State<Authentication> {
                   // ignore: deprecated_member_use
                   child: TextButton(
                     key: Key('RegisterButton'),
-                    style: 
-                    TextButton.styleFrom(primary: Colors.red[400], padding:  const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),),
-                    
-                    onPressed: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Orders(title)),
-                      )
-                    },
+                    style: TextButton.styleFrom(
+                      primary: Colors.red[400],
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 20.0),
+                    ),
+                    onPressed: () => {register()},
                     child: Text(
                       'Register',
                       style: TextStyle(color: foregroundColor),
@@ -312,9 +395,11 @@ class _AuthenticationState extends State<Authentication> {
                 Expanded(
                   child: TextButton(
                     key: Key('GoToLogin'),
-                    style: TextButton.styleFrom(primary: Colors.transparent, padding:  const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),),
-                    
+                    style: TextButton.styleFrom(
+                      primary: Colors.transparent,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 20.0),
+                    ),
                     onPressed: () => {
                       setState(() {
                         pressed = 'LOGIN';
@@ -404,6 +489,7 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 Expanded(
                   child: TextField(
+                    controller: emailController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -443,6 +529,7 @@ class _AuthenticationState extends State<Authentication> {
                 Expanded(
                   child: TextField(
                     obscureText: true,
+                    controller: passwordController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -467,12 +554,7 @@ class _AuthenticationState extends State<Authentication> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 20.0),
                     color: Colors.red[400],
-                    onPressed: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Orders(title)),
-                      )
-                    },
+                    onPressed: () => {login()},
                     child: Text(
                       'Log In',
                       style: TextStyle(color: foregroundColor),
@@ -514,10 +596,11 @@ class _AuthenticationState extends State<Authentication> {
                 Expanded(
                   child: TextButton(
                     key: Key('GoToRegister'),
-                    style: TextButton.styleFrom( 
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
-                    backgroundColor: Colors.transparent,),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 20.0),
+                      backgroundColor: Colors.transparent,
+                    ),
                     onPressed: () => {
                       setState(() {
                         pressed = 'REGISTER';
@@ -535,5 +618,63 @@ class _AuthenticationState extends State<Authentication> {
         ],
       ),
     );
+  }
+
+  void register() {
+    email = emailController.text;
+    username = usernameController.text;
+    password = passwordController.text;
+    vehiclePlate = vehiclePlateController.text;
+    phoneNumber = phonenumberController.text;
+
+    var confirmPassword = confirmController.text;
+    if (password != confirmPassword) {
+      Fluttertoast.showToast(
+          msg: 'Passwords Do Not Match',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 16.0);
+      return;
+    }
+    if (email.isEmpty ||
+        username.isEmpty ||
+        password.isEmpty ||
+        phoneNumber.isEmpty ||
+        vehiclePlate.isEmpty) {
+      Fluttertoast.showToast(
+          msg: 'One or more fields are empty',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 16.0);
+      return;
+    }
+    var rider = Rider(username, password, email, phoneNumber, vehiclePlate);
+    authBloc.register(rider, client);
+    authBloc.login(rider, client);
+  }
+
+  void login() {
+    email = emailController.text;
+    password = passwordController.text;
+
+    if (email.length == 0 || password.length == 0) {
+      Fluttertoast.showToast(
+          msg: 'One or more fields are empty',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 16.0);
+      return;
+    }
+    var rider = Rider.loginData(email, password);
+    authBloc.login(rider, client);
   }
 }

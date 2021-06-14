@@ -77,7 +77,7 @@ class _OrdersState extends State<Orders> {
   }
 
   Widget OrderList() {
-    return Container(
+    return Expanded(child:Container(
       height: MediaQuery.of(context).size.height / 2.3,
       alignment: Alignment.topCenter,
       margin: EdgeInsets.all(20),
@@ -205,7 +205,7 @@ class _OrdersState extends State<Orders> {
           )
         ],
       ),
-    );
+    ));
   }
 
   Widget CurrentSelectedOrder() {

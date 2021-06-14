@@ -42,6 +42,7 @@ dependencies:
   http: ^0.13.3
   sprintf: ^6.0.0
   polyline: ^1.0.2
+  fluttertoast: ^8.0.7
   
 
 dev_dependencies:
@@ -49,6 +50,9 @@ dev_dependencies:
     sdk: flutter
   pedantic: ^1.11.0
   build_runner: ^1.12.0
+  mockito: ^5.0.6
+  source_gen: ^1.0.0
+  code_builder: ^3.7.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
