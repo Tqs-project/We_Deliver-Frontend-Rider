@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geocoder/geocoder.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wedeliver/Blocs/LocationBloc.dart';
-import 'package:wedeliver/Entities/Rider.dart';
 import 'package:wedeliver/locations.dart';
 
 import 'authentication_bloc_test.mocks.dart';
@@ -16,9 +12,6 @@ final String BASE_URL = 'https://webmarket-314811.oa.r.appspot.com';
 
 @GenerateMocks([http.Client])
 void main() {
-  final testRider =
-      Rider('username', 'email', 'password', 'phonenumber', 'licenseplate');
-
   final locBloc = LocationBloc();
 
   final client = MockClient();
