@@ -50,17 +50,17 @@ class _AuthenticationState extends State<Authentication> {
         stream: authBloc.getLoginStream,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
-            var data = snapshot.data as LoginData;
-            if (data.token.isNotEmpty) {
+            var data = snapshot.data as UserData;
+            if (data.loginData.token.isNotEmpty) {
               Future.delayed(Duration.zero, () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Orders(title)),
+                  MaterialPageRoute(builder: (context) => Orders(title, data)),
                 );
               });
             } else {
               Fluttertoast.showToast(
-                  msg: data.error,
+                  msg: data.loginData.error,
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER,
                   timeInSecForIosWeb: 1,
@@ -145,17 +145,17 @@ class _AuthenticationState extends State<Authentication> {
                   padding:
                       EdgeInsets.only(top: 10.0, bottom: 10.0, right: 00.0),
                   child: Icon(
-                    Icons.alternate_email,
+                    Icons.person,
                     color: foregroundColor,
                   ),
                 ),
                 Expanded(
                   child: TextField(
-                    controller: emailController,
+                    controller: usernameController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Email',
+                      hintText: 'Username',
                       hintStyle: TextStyle(color: foregroundColor),
                     ),
                   ),
@@ -489,11 +489,11 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 Expanded(
                   child: TextField(
-                    controller: emailController,
+                    controller: usernameController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Email',
+                      hintText: 'Username',
                       hintStyle: TextStyle(color: foregroundColor),
                     ),
                   ),
@@ -660,10 +660,10 @@ class _AuthenticationState extends State<Authentication> {
   }
 
   void login() {
-    email = emailController.text;
+    username = usernameController.text;
     password = passwordController.text;
 
-    if (email.length == 0 || password.length == 0) {
+    if (username.length == 0 || password.length == 0) {
       Fluttertoast.showToast(
           msg: 'One or more fields are empty',
           toastLength: Toast.LENGTH_SHORT,
@@ -674,7 +674,7 @@ class _AuthenticationState extends State<Authentication> {
           fontSize: 16.0);
       return;
     }
-    var rider = Rider.loginData(email, password);
+    var rider = Rider.loginData(username, password);
     authBloc.login(rider, client);
   }
 }

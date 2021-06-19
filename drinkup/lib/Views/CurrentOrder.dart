@@ -1,26 +1,38 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart';
+import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
 import 'package:wedeliver/Blocs/LocationBloc.dart';
+import 'package:wedeliver/Blocs/OrdersBloc.dart';
+import 'package:wedeliver/Entities/Order.dart';
+import 'package:wedeliver/Views/Orders.dart';
 
 import 'Profile.dart';
 
 // ignore: must_be_immutable
 class CurrentOrder extends StatefulWidget {
-  CurrentOrder(this.title);
+  CurrentOrder(this.title, this.userData, this.currentOrder);
+  UserData userData;
   String title;
+  Order currentOrder;
   @override
   _CurrentOrderState createState() => _CurrentOrderState();
 }
 
 class _CurrentOrderState extends State<CurrentOrder> {
   final Color foregroundColor = Colors.white;
-
+  late UserData userData;
+  late Order order;
   var title = '';
   @override
   void initState() {
     super.initState();
+    userData = widget.userData;
+    order = widget.currentOrder;
+
     title = widget.title;
   }
 
@@ -78,7 +90,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
                     SizedBox(
                         width: MediaQuery.of(context).size.width /
                             1.05, // or use fixed size like 200
-                        height: MediaQuery.of(context).size.height / 2.2,
+                        height: MediaQuery.of(context).size.height / 2.4,
                         child: GpsSection(context)),
                     OrderDetails(context)
                   ]),
@@ -87,8 +99,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
 
   var initialCameraPosition;
   Widget GpsSection(BuildContext context) {
-    locationBloc.calculateRoute('Casa Pina',
-        'R. Antónia Rodrigues 36, 3800-102 Aveiro', 'DETI 3810-193 Aveiro');
+    locationBloc.calculateRoute(order.storeLocation, order.customerLocation);
     return StreamBuilder(
         stream: locationBloc.getGpsData,
         builder: (context, snapshot) {
@@ -117,6 +128,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
               ),
               padding: const EdgeInsets.only(left: 5.0, right: 5.0),
               child: GoogleMap(
+                  key: Key('GoogleMap'),
                   myLocationEnabled: true,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(details.location.lat!.toDouble(),
@@ -156,11 +168,52 @@ class _CurrentOrderState extends State<CurrentOrder> {
             ),
           ),
           Text(
-            '#916544',
+            '#' + order.id.toString(),
             style: TextStyle(
                 color: Colors.white,
                 decorationColor: Colors.white,
                 fontSize: 16),
+          ),
+          // ignore: deprecated_member_use
+          RaisedButton(
+            onPressed: () {
+              ordersBloc.delivered(order.id, userData.loginData.token,
+                  userData.riderData.username, Client());
+              ordersBloc.getRiderOrders(
+                  userData.riderData, userData.loginData.token, Client());
+
+              Fluttertoast.showToast(
+                  msg: 'Order has been delivered',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.green,
+                  textColor: Colors.black,
+                  fontSize: 16.0);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (context) => Orders(title, userData)),
+                  (Route<dynamic> route) => false);
+            },
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(80.0)),
+            padding: const EdgeInsets.all(0.0),
+            child: Ink(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(colors: [Colors.red, Colors.white]),
+                borderRadius: BorderRadius.all(Radius.circular(80.0)),
+              ),
+              child: Container(
+                constraints: const BoxConstraints(
+                    minWidth: 88.0,
+                    minHeight: 36.0), // min sizes for Material buttons
+                alignment: Alignment.center,
+                child: const Text(
+                  'Delivered',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
           ),
           Divider(
             height: 20,
@@ -181,8 +234,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
                     color: Color.fromRGBO(40, 40, 61, 1),
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  child: Text(
-                      'From Casa Pina, R. Antónia Rodrigues 36, 3800-102 Aveiro',
+                  child: Text('From ' + order.storeLocation,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
@@ -197,7 +249,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Text(
-                      'To DETI 3810-193 Aveiro',
+                      'To ' + order.customerLocation,
                       style: TextStyle(
                           color: Colors.white,
                           decorationColor: Colors.white,
@@ -211,7 +263,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Text(
-                      'Arthur Shelby, 913 512 615',
+                      order.username,
                       style: TextStyle(
                           color: Colors.white,
                           decorationColor: Colors.white,
@@ -228,7 +280,7 @@ class _CurrentOrderState extends State<CurrentOrder> {
           ),
           Center(
             child: Text(
-              'Profit: 3.06€',
+              'Profit: ' + order.cost.toString() + '€',
               textScaleFactor: 1.0, // disables accessibility
               style: TextStyle(
                   fontSize: 18.0,
