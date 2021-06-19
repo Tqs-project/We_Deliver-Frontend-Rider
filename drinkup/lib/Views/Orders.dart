@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
@@ -8,7 +7,6 @@ import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
 import 'package:wedeliver/Blocs/LocationBloc.dart';
 import 'package:wedeliver/Blocs/OrdersBloc.dart';
 import 'package:wedeliver/Entities/Order.dart';
-
 import 'CurrentOrder.dart';
 import 'Profile.dart';
 

@@ -1,11 +1,3 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart' as ft_test;
@@ -49,8 +41,8 @@ void main() {
       Uri.parse(BASE_URL + '/api/riders'),
       headers: anyNamed('headers'),
     )).thenAnswer((_) async => http.Response(
-        '{"id": 4,"username": "Pedro","email": "pedro@gmail.com", "role": "RIDER", "phoneNumber": "9134562", "vehiclePlate": "HH-45-56",  "comments": [],' +
-            ' "lat": "40.6082531", "lng": "-8.6394009", "busy": false, "rides": []}',
+        '{"id": 4,"username": "Pedro","email": "pedro@gmail.com", "role": "RIDER", "phoneNumber": "9134562", "vehiclePlate": "HH-45-56",  "comments": [],'
+        ' "lat": "40.6082531", "lng": "-8.6394009", "busy": false, "rides": []}',
         200));
 
     final authBlocMock = AuthenticationBloc();

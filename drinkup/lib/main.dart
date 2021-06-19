@@ -1,6 +1,4 @@
-import 'Blocs/LocationBloc.dart';
 import 'Views/Authentication.dart';
-
 import 'package:flutter/material.dart';
 
 void main() {

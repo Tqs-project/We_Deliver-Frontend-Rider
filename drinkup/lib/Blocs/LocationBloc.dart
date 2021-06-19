@@ -7,7 +7,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmap;
-import 'package:http/http.dart' as http;
+
 import 'package:http/http.dart';
 import 'package:sprintf/sprintf.dart';
 import '../locations.dart' as loc;

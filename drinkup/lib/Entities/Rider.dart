@@ -13,6 +13,7 @@ class Rider {
       this.id, this.username, this.email, this.phonenumber, this.vehiclePlate);
   Rider.empty();
   factory Rider.fromJson(Map<String, dynamic> json) {
+    // ignore: unnecessary_null_comparison
     if (int.parse(json['id'].toString()) == null) {
       return Rider.empty();
     }
