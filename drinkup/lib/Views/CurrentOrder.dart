@@ -99,7 +99,8 @@ class _CurrentOrderState extends State<CurrentOrder> {
 
   var initialCameraPosition;
   Widget GpsSection(BuildContext context) {
-    locationBloc.calculateRoute(order.storeLocation, order.customerLocation);
+    locationBloc.calculateRoute(
+        order.storeLocation, order.customerLocation, Client());
     return StreamBuilder(
         stream: locationBloc.getGpsData,
         builder: (context, snapshot) {
@@ -179,8 +180,8 @@ class _CurrentOrderState extends State<CurrentOrder> {
             onPressed: () {
               ordersBloc.delivered(order.id, userData.loginData.token,
                   userData.riderData.username, Client());
-              ordersBloc.getRiderOrders(
-                  userData.riderData, userData.loginData.token, Client());
+              ordersBloc.getRiderOrders(userData.riderData,
+                  userData.loginData.token, Client(), locationBloc);
 
               Fluttertoast.showToast(
                   msg: 'Order has been delivered',

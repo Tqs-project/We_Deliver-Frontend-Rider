@@ -1,56 +1,69 @@
-import 'dart:io';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/testing.dart' as ft_test;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
+import 'package:wedeliver/Blocs/LocationBloc.dart';
+import 'package:wedeliver/Blocs/OrdersBloc.dart';
 import 'package:wedeliver/Entities/Rider.dart';
 
 import 'authentication_bloc_test.mocks.dart';
 
 final String BASE_URL = 'https://webmarket-314811.oa.r.appspot.com';
 
+class MockLocationBloc extends Mock implements LocationBloc {}
+
 @GenerateMocks([http.Client])
 void main() {
   final testRider =
       Rider('username', 'email', 'password', 'phonenumber', 'licenseplate');
+  var mock = MockLocationBloc();
 
+  final ordersBloc = OrdersBloc();
   final client = MockClient();
-
-  test('test register ------------------------------------------------------',
+  when(mock.initialize('username', 'TOKEN', client))
+      .thenAnswer((_) async => http.Response("Doesn't matter", 200));
+  when(client.get(Uri.parse(BASE_URL + '/api/riders/order'),
+          headers: anyNamed('headers')))
+      .thenAnswer((_) async => http.Response(
+          '{ "id": 0, "orderTimestamp": "2021-06-19T16:56:47.144+00:00","paymentType": "Card", "status": "WAITING",'
+          ' "cost": 100, "customerLocation": "Aveiro", "location": "Porto", "customerId": 0,'
+          '"username": "username", "rideId": null}',
+          200));
+  when(client.post(Uri.parse(BASE_URL + '/api/riders/order/decline'),
+          headers: anyNamed('headers'),
+          body: anyNamed('body'),
+          encoding: anyNamed('encoding')))
+      .thenAnswer((_) async => http.Response('', 200));
+  when(client.post(Uri.parse(BASE_URL + '/api/riders/order/accept'),
+          headers: anyNamed('headers'),
+          body: anyNamed('body'),
+          encoding: anyNamed('encoding')))
+      .thenAnswer((_) async => http.Response('Have a nice Ride', 200));
+  when(client.post(Uri.parse(BASE_URL + '/api/riders/ride/0/delivered'),
+          headers: anyNamed('headers'),
+          body: anyNamed('body'),
+          encoding: anyNamed('encoding')))
+      .thenAnswer((_) async => http.Response('', 200));
+  test(
+      'test GetRidersOrders ------------------------------------------------------',
       () async {
-    var client = ft_test.MockClient((request) async {
-      return http.Response('Created', 201);
-    });
-    final authBlocMock = AuthenticationBloc();
-
-    var response = await authBlocMock.register(testRider, client);
-    expect(response.statusCode, equals(201));
+    var response =
+        await ordersBloc.getRiderOrders(testRider, 'TOKEN', client, mock);
+    expect(response.cost, equals(100));
+    expect(response.id, equals(0));
   });
 
-  test('test Login -------------------------------------------------------',
+  test(
+      'test declineOrder ------------------------------------------------------',
       () async {
-    when(client.post(Uri.parse(BASE_URL + '/api/riders/login'),
-            headers: anyNamed('headers'),
-            body: anyNamed('body'),
-            encoding: anyNamed('encoding')))
-        .thenAnswer((_) async =>
-            http.Response('{"token":"TOKEN", "errorMessage":"ERROR"}', 200));
+    var response =
+        await ordersBloc.declineOrder(testRider, 'TOKEN', client, mock);
+    expect(response.statusCode, equals(200));
+  });
 
-    when(client.get(
-      Uri.parse(BASE_URL + '/api/riders'),
-      headers: anyNamed('headers'),
-    )).thenAnswer((_) async => http.Response(
-        '{"id": 4,"username": "Pedro","email": "pedro@gmail.com", "role": "RIDER", "phoneNumber": "9134562", "vehiclePlate": "HH-45-56",  "comments": [],' +
-            ' "lat": "40.6082531", "lng": "-8.6394009", "busy": false, "rides": []}',
-        200));
-
-    final authBlocMock = AuthenticationBloc();
-
-    var response = await authBlocMock.login(testRider, client);
-    expect(response.token, equals('TOKEN'));
-    expect(response.error, equals('ERROR'));
+  test('test delivered ------------------------------------------------------',
+      () async {
+    var response = await ordersBloc.delivered(0, 'TOKEN', 'username', client);
+    expect(response.statusCode, equals(200));
   });
 }

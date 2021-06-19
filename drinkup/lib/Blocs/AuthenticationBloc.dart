@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Client, Response;
 import 'dart:io';
 
@@ -83,9 +82,10 @@ class AuthenticationBloc {
 }
 
 class UserData {
-  LoginData loginData;
-  Rider riderData;
   UserData(this.loginData, this.riderData);
+  UserData.empty();
+  LoginData loginData = LoginData.empty();
+  Rider riderData = Rider.empty();
 }
 
 final authBloc = AuthenticationBloc();

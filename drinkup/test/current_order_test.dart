@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
 import 'package:wedeliver/Entities/LoginData.dart';
 import 'package:wedeliver/Entities/Order.dart';
 import 'package:wedeliver/Entities/Rider.dart';
 import 'package:wedeliver/Views/CurrentOrder.dart';
-
-import 'package:wedeliver/main.dart';
 
 void main() {
   Widget createWidgetForTesting(Widget child) {

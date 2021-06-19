@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
-import 'package:intl/intl.dart';
 import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
 import 'package:wedeliver/Blocs/LocationBloc.dart';
 import 'package:wedeliver/Blocs/OrdersBloc.dart';
@@ -36,7 +35,7 @@ class _OrdersState extends State<Orders> {
     userData = widget.userData;
     var httpClient = Client();
     ordersBloc.getRiderOrders(
-        userData.riderData, userData.loginData.token, httpClient);
+        userData.riderData, userData.loginData.token, httpClient, locationBloc);
   }
 
   @override
@@ -135,8 +134,11 @@ class _OrdersState extends State<Orders> {
                           ? GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  ordersBloc.getRiderOrders(userData.riderData,
-                                      userData.loginData.token, Client());
+                                  ordersBloc.getRiderOrders(
+                                      userData.riderData,
+                                      userData.loginData.token,
+                                      Client(),
+                                      locationBloc);
                                 });
                                 Fluttertoast.showToast(
                                     msg: 'Reloading...',
@@ -270,6 +272,7 @@ class _OrdersState extends State<Orders> {
                         // ignore: deprecated_member_use
                         RaisedButton(
                           onPressed: () {
+                            // ignore: unnecessary_null_comparison
                             if (currentOrder != null) {
                               ordersBloc.acceptOrder(userData.riderData,
                                   userData.loginData.token, Client());
@@ -307,8 +310,11 @@ class _OrdersState extends State<Orders> {
                         // ignore: deprecated_member_use
                         RaisedButton(
                           onPressed: () {
-                            ordersBloc.declineOrder(userData.riderData,
-                                userData.loginData.token, Client());
+                            ordersBloc.declineOrder(
+                                userData.riderData,
+                                userData.loginData.token,
+                                Client(),
+                                locationBloc);
                             setState(() {
                               currentOrder = Order.empty();
                             });
@@ -403,7 +409,7 @@ class _OrdersState extends State<Orders> {
 
   Future setDistance() async {
     var _distance = await locationBloc.getDistance(
-        currentOrder.storeLocation, currentOrder.customerLocation);
+        currentOrder.storeLocation, currentOrder.customerLocation, Client());
     setState(() {
       distance = _distance;
     });

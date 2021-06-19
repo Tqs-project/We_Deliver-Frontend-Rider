@@ -64,8 +64,8 @@ class LocationBloc {
     return true;
   }
 
-  Future<Response> postLocation(
-      String token, String username, loc.LatLng location, Client client) async {
+  Future<Response> postLocation(String token, String username,
+      loc.LatLng clocation, Client client) async {
     var uri = Uri.https(BASE_URL, ('/api/riders/location'));
     final response = await client.post(uri,
         headers: {
@@ -75,14 +75,14 @@ class LocationBloc {
           'username': username
         },
         body: jsonEncode({
-          'lat': location.lat.toString(),
-          'lng': location.lng.toString(),
+          'lat': clocation.lat.toString(),
+          'lng': clocation.lng.toString(),
         }));
     return response;
   }
 
   Future<double> getDistance(
-      String storeAddress, String destinationAddress) async {
+      String storeAddress, String destinationAddress, Client client) async {
     var url = sprintf(
         'https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&waypoints=%s&key=%s',
         [
@@ -92,7 +92,7 @@ class LocationBloc {
           storeAddress,
           'AIzaSyBPi7DD20WaxRNbaic5aVNwV3mbWCnioHk',
         ]);
-    var response = await http.get(Uri.parse(url));
+    var response = await client.get(Uri.parse(url));
     if (response.statusCode == 200) {
       if ((json.decode(response.body)['routes']) == []) return 0;
 
@@ -106,13 +106,25 @@ class LocationBloc {
     return 0;
   }
 
-  Future calculateRoute(String storeAddress, String destinationAddress) async {
+  Future<List<Address>> getGeocoderAddressesByQuery(
+      String storeAddress, String destinationAddress) async {
     var addresses = await Geocoder.local.findAddressesFromQuery(storeAddress);
     var destinations =
         await Geocoder.local.findAddressesFromQuery(destinationAddress);
 
-    var storeCoords = addresses.first.coordinates;
-    var destinationCoords = destinations.first.coordinates;
+    return [addresses.first, destinations.first];
+  }
+
+  Future<Response> calculateRoute(
+      String storeAddress, String destinationAddress, Client client) async {
+    var returned =
+        await getGeocoderAddressesByQuery(storeAddress, destinationAddress);
+
+    var addresses = returned[0];
+    var destinations = returned[1];
+
+    var storeCoords = addresses.coordinates;
+    var destinationCoords = destinations.coordinates;
 
     var _temp = <String?, gmap.Marker>{};
     var marker = gmap.Marker(
@@ -143,7 +155,7 @@ class LocationBloc {
           storeAddress,
           'AIzaSyBPi7DD20WaxRNbaic5aVNwV3mbWCnioHk',
         ]);
-    var response = await http.get(Uri.parse(url));
+    var response = await client.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var encoded = json.decode(response.body)['routes'][0]['overview_polyline']
           ['points'];
@@ -159,6 +171,7 @@ class LocationBloc {
       _polylines.add(polyline);
       update(_polylines, _temp);
     }
+    return response;
   }
 
   void update(Set<gmap.Polyline> route, Map<String?, gmap.Marker> _markers) {

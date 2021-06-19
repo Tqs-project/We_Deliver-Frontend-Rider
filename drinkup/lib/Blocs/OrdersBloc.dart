@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' show Client, Response;
 import 'package:wedeliver/Blocs/LocationBloc.dart';
 import 'dart:io';
@@ -14,7 +13,8 @@ class OrdersBloc {
   Stream get getOrderStream => orderStreamController.stream;
   final String BASE_URL = 'webmarket-314811.oa.r.appspot.com';
 
-  Future<Order> getRiderOrders(Rider rider, String token, Client client) async {
+  Future<Order> getRiderOrders(
+      Rider rider, String token, Client client, LocationBloc locBloc) async {
     var uri = Uri.https(BASE_URL, ('/api/riders/order'));
     final response = await client.get(uri, headers: {
       'Access-Control-Allow-Origin': '*',
@@ -25,7 +25,7 @@ class OrdersBloc {
       if (json.decode(response.body)['id'] != null) {
         var order = Order.fromJson(json.decode(response.body));
         update(order);
-        locationBloc.initialize(rider.username, token, client);
+        locBloc.initialize(rider.username, token, client);
         return order;
       }
     }
@@ -34,7 +34,7 @@ class OrdersBloc {
   }
 
   Future<Response> declineOrder(
-      Rider rider, String token, Client client) async {
+      Rider rider, String token, Client client, LocationBloc locBloc) async {
     var uri = Uri.https(BASE_URL, ('/api/riders/order/decline'));
     final response = await client.post(uri, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -43,7 +43,7 @@ class OrdersBloc {
       'username': rider.username
     });
     if (response.statusCode == 200) {
-      await getRiderOrders(rider, token, client);
+      await getRiderOrders(rider, token, client, locBloc);
     }
     return response;
   }
