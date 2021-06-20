@@ -7,6 +7,7 @@ import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
 import 'package:wedeliver/Blocs/LocationBloc.dart';
 import 'package:wedeliver/Blocs/OrdersBloc.dart';
 import 'package:wedeliver/Entities/Order.dart';
+import 'package:wedeliver/Views/Authentication.dart';
 import 'CurrentOrder.dart';
 import 'Profile.dart';
 
@@ -32,6 +33,8 @@ class _OrdersState extends State<Orders> {
     title = widget.title;
     userData = widget.userData;
     var httpClient = Client();
+    locationBloc.initialize(
+        userData.riderData.username, userData.loginData.token, Client());
     ordersBloc.getRiderOrders(
         userData.riderData, userData.loginData.token, httpClient, locationBloc);
   }
@@ -55,17 +58,21 @@ class _OrdersState extends State<Orders> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile(title)),
+                  MaterialPageRoute(
+                      builder: (context) => Profile(title, userData)),
                 );
               },
             ),
             IconButton(
               icon: Icon(
-                Icons.settings,
+                Icons.logout,
                 color: Colors.white,
               ),
               onPressed: () {
-                // do something
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (context) => Authentication(title)),
+                    (Route<dynamic> route) => false);
               },
             ),
           ],

@@ -190,10 +190,10 @@ class _AuthenticationState extends State<Authentication> {
                 Expanded(
                   child: TextField(
                     textAlign: TextAlign.center,
-                    controller: usernameController,
+                    controller: emailController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Name',
+                      hintText: 'Email',
                       hintStyle: TextStyle(color: foregroundColor),
                     ),
                   ),
@@ -370,6 +370,7 @@ class _AuthenticationState extends State<Authentication> {
                   child: TextButton(
                     key: Key('RegisterButton'),
                     style: TextButton.styleFrom(
+                      backgroundColor: Colors.red[400],
                       primary: Colors.red[400],
                       padding: const EdgeInsets.symmetric(
                           vertical: 20.0, horizontal: 20.0),
@@ -653,7 +654,7 @@ class _AuthenticationState extends State<Authentication> {
           fontSize: 16.0);
       return;
     }
-    var rider = Rider(username, password, email, phoneNumber, vehiclePlate);
+    var rider = Rider(username, email, password, phoneNumber, vehiclePlate);
     authBloc.register(rider, client);
     authBloc.login(rider, client);
   }

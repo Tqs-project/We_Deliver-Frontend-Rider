@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
+import 'package:wedeliver/Blocs/LocationBloc.dart';
 
 // ignore: must_be_immutable
 class Profile extends StatefulWidget {
-  Profile(this.title);
+  Profile(this.title, this.userData);
   String title;
+  UserData userData;
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -14,10 +17,21 @@ class _ProfileState extends State<Profile> {
   final Color? foregroundColor = Colors.grey[200];
   String typeOfTransport = 'CAR';
   var title = '';
+  late UserData currentUser;
+  String location = '';
   @override
   void initState() {
     super.initState();
     title = widget.title;
+    currentUser = widget.userData;
+    init();
+  }
+
+  void init() async {
+    var address = await locationBloc.getAddressFromCoordinates();
+    setState(() {
+      location = address.addressLine;
+    });
   }
 
   @override
@@ -48,7 +62,9 @@ class _ProfileState extends State<Profile> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[Profile(context), Statistics(context)],
+          children: <Widget>[
+            Profile(context),
+          ],
         ));
   }
 
@@ -82,7 +98,7 @@ class _ProfileState extends State<Profile> {
                 ),
               )),
           Hero(
-            tag: 'Harry Potter',
+            tag: currentUser.riderData.username,
             child: Material(
               type: MaterialType.transparency,
               child: Padding(
@@ -90,7 +106,7 @@ class _ProfileState extends State<Profile> {
                 child: Center(
                   child: TextFormField(
                     textAlign: TextAlign.center,
-                    initialValue: 'Harry Potter',
+                    initialValue: currentUser.riderData.username,
                     style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
                 ),
@@ -103,10 +119,10 @@ class _ProfileState extends State<Profile> {
                   EdgeInsets.only(top: 20), // add padding to adjust text
               prefixIcon: Padding(
                 padding: EdgeInsets.only(top: 15), // add padding to adjust icon
-                child: Icon(Icons.location_city, color: Colors.red),
+                child: Icon(Icons.email, color: Colors.red),
               ),
             ),
-            initialValue: 'Privet Drive',
+            initialValue: currentUser.riderData.email,
             style: TextStyle(color: Colors.white),
           ),
           TextFormField(
@@ -115,10 +131,10 @@ class _ProfileState extends State<Profile> {
                   EdgeInsets.only(top: 20), // add padding to adjust text
               prefixIcon: Padding(
                 padding: EdgeInsets.only(top: 15), // add padding to adjust icon
-                child: Icon(Icons.email, color: Colors.red),
+                child: Icon(Icons.car_repair, color: Colors.red),
               ),
             ),
-            initialValue: 'hp@hogwarts.com',
+            initialValue: currentUser.riderData.vehiclePlate,
             style: TextStyle(color: Colors.white),
           ),
           TextFormField(
@@ -130,40 +146,26 @@ class _ProfileState extends State<Profile> {
                 child: Icon(Icons.phone, color: Colors.red),
               ),
             ),
-            initialValue: '913 415 285',
+            initialValue: currentUser.riderData.phonenumber,
             style: TextStyle(color: Colors.white),
           ),
           Divider(
-            height: 10,
+            height: 20,
           ),
           Center(
-            child: ToggleSwitch(
-              initialLabelIndex: 1,
-              minWidth: 90,
-              cornerRadius: 20.0,
-              activeFgColor: Colors.white,
-              inactiveBgColor: Colors.grey,
-              inactiveFgColor: Colors.white,
-              labels: ['', '', ''],
-              icons: [
-                Icons.directions_car,
-                Icons.directions_bike,
-                Icons.directions_walk
-              ],
-              activeBgColors: [
-                Color.fromRGBO(233, 86, 83, 1),
-                Color.fromRGBO(233, 86, 83, 1),
-                Color.fromRGBO(233, 86, 83, 1),
-              ],
-              onToggle: (index) {
-                if (index == 0) {
-                  typeOfTransport = 'RIDER';
-                } else {
-                  typeOfTransport = 'CLIENT';
-                }
-              },
-            ),
-          ),
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.location_city, color: Colors.red),
+              Text(
+                location,
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          )),
+          Divider(height: 10, thickness: 2, color: Colors.red),
+
+          /*
           Center(
               // ignore: deprecated_member_use
               child: RaisedButton(
@@ -188,12 +190,12 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-          )),
+          )),*/
         ],
       ),
     ));
   }
-
+  /*
   Widget Statistics(BuildContext context) {
     return Expanded(
         child: Container(
@@ -272,5 +274,5 @@ class _ProfileState extends State<Profile> {
         ],
       ),
     ));
-  }
+  }*/
 }
