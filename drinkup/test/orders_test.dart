@@ -7,11 +7,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wedeliver/Blocs/AuthenticationBloc.dart';
 import 'package:wedeliver/Blocs/LocationBloc.dart';
-import 'package:wedeliver/Views/Orders.dart';
-
-import 'package:wedeliver/main.dart';
 
 class MockLoc extends Mock implements LocationBloc {}
 

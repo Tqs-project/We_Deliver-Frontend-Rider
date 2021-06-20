@@ -32,6 +32,14 @@ class LocationBloc {
     _determinePosition(username, token, client);
   }
 
+  Future<Address> getAddressFromCoordinates() async {
+    final coordinates = Coordinates(location.lat, location.lng);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    debugPrint("++++++++++++++++++++++" + addresses.first.addressLine);
+    return addresses.first;
+  }
+
   Future<bool> _determinePosition(
       String username, String token, Client client) async {
     bool serviceEnabled;

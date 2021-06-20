@@ -55,7 +55,8 @@ class _CurrentOrderState extends State<CurrentOrder> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile(title)),
+                  MaterialPageRoute(
+                      builder: (context) => Profile(title, userData)),
                 );
               },
             ),
