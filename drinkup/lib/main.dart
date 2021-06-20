@@ -1,6 +1,4 @@
-import 'Blocs/LocationBloc.dart';
 import 'Views/Authentication.dart';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,7 +8,6 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    locationBloc.initialize();
     return MaterialApp(
       title: 'We Deliver',
       theme: ThemeData(
