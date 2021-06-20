@@ -36,7 +36,6 @@ class LocationBloc {
     final coordinates = Coordinates(location.lat, location.lng);
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    debugPrint("++++++++++++++++++++++" + addresses.first.addressLine);
     return addresses.first;
   }
 
