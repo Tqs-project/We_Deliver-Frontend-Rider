@@ -103,12 +103,18 @@ class LocationBloc {
     if (response.statusCode == 200) {
       if ((json.decode(response.body)['routes']) == []) return 0;
 
-      var distance = int.parse(json
-              .decode(response.body)['routes'][0]['legs'][0]['distance']
-                  ['value']
-              .toString()) /
-          1000;
-      return distance;
+      try {
+        var distance = int.parse(json
+                .decode(response.body)['routes'][0]['legs'][0]['distance']
+                    ['value']
+                .toString()) /
+            1000;
+        return distance;
+      } on Exception catch (exception) {
+        return 0;
+      } catch (error) {
+        return 0;
+      }
     }
     return 0;
   }
