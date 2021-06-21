@@ -110,7 +110,7 @@ class LocationBloc {
                 .toString()) /
             1000;
         return distance;
-      } on Exception catch (exception) {
+      } on Exception catch (_) {
         return 0;
       } catch (error) {
         return 0;
@@ -130,61 +130,65 @@ class LocationBloc {
 
   Future<Response> calculateRoute(
       String storeAddress, String destinationAddress, Client client) async {
-    var returned =
-        await getGeocoderAddressesByQuery(storeAddress, destinationAddress);
+    try {
+      var returned =
+          await getGeocoderAddressesByQuery(storeAddress, destinationAddress);
 
-    var addresses = returned[0];
-    var destinations = returned[1];
+      var addresses = returned[0];
+      var destinations = returned[1];
 
-    var storeCoords = addresses.coordinates;
-    var destinationCoords = destinations.coordinates;
+      var storeCoords = addresses.coordinates;
+      var destinationCoords = destinations.coordinates;
 
-    var _temp = <String?, gmap.Marker>{};
-    var marker = gmap.Marker(
-      markerId: gmap.MarkerId(storeAddress),
-      position: gmap.LatLng(storeCoords.latitude, storeCoords.longitude),
-      infoWindow: gmap.InfoWindow(
-        title: storeAddress,
-        snippet: storeAddress,
-      ),
-    );
-    _temp[storeAddress] = marker;
-    var marker2 = gmap.Marker(
-      markerId: gmap.MarkerId(destinationAddress),
-      position:
-          gmap.LatLng(destinationCoords.latitude, destinationCoords.longitude),
-      infoWindow: gmap.InfoWindow(
-        title: destinationAddress,
-      ),
-    );
-    _temp[destinationAddress] = marker2;
+      var _temp = <String?, gmap.Marker>{};
+      var marker = gmap.Marker(
+        markerId: gmap.MarkerId(storeAddress),
+        position: gmap.LatLng(storeCoords.latitude, storeCoords.longitude),
+        infoWindow: gmap.InfoWindow(
+          title: storeAddress,
+          snippet: storeAddress,
+        ),
+      );
+      _temp[storeAddress] = marker;
+      var marker2 = gmap.Marker(
+        markerId: gmap.MarkerId(destinationAddress),
+        position: gmap.LatLng(
+            destinationCoords.latitude, destinationCoords.longitude),
+        infoWindow: gmap.InfoWindow(
+          title: destinationAddress,
+        ),
+      );
+      _temp[destinationAddress] = marker2;
 
-    var url = sprintf(
-        'https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&waypoints=%s&key=%s',
-        [
-          location.lat.toString(),
-          location.lng.toString(),
-          destinationAddress,
-          storeAddress,
-          'AIzaSyBPi7DD20WaxRNbaic5aVNwV3mbWCnioHk',
-        ]);
-    var response = await client.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      var encoded = json.decode(response.body)['routes'][0]['overview_polyline']
-          ['points'];
+      var url = sprintf(
+          'https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s&waypoints=%s&key=%s',
+          [
+            location.lat.toString(),
+            location.lng.toString(),
+            destinationAddress,
+            storeAddress,
+            'AIzaSyBPi7DD20WaxRNbaic5aVNwV3mbWCnioHk',
+          ]);
+      var response = await client.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        var encoded = json.decode(response.body)['routes'][0]
+            ['overview_polyline']['points'];
 
-      var decoded = Polyline.Decode(encodedString: encoded.toString());
+        var decoded = Polyline.Decode(encodedString: encoded.toString());
 
-      var polyline = gmap.Polyline(
-          polylineId: gmap.PolylineId('route'),
-          color: Color.fromARGB(255, 40, 122, 198),
-          points: toLatLng(decoded.decodedCoords));
-      var _polylines = <gmap.Polyline>{};
+        var polyline = gmap.Polyline(
+            polylineId: gmap.PolylineId('route'),
+            color: Color.fromARGB(255, 40, 122, 198),
+            points: toLatLng(decoded.decodedCoords));
+        var _polylines = <gmap.Polyline>{};
 
-      _polylines.add(polyline);
-      update(_polylines, _temp);
+        _polylines.add(polyline);
+        update(_polylines, _temp);
+      }
+      return response;
+    } catch (_) {
+      return Response('Address Not Found', 204);
     }
-    return response;
   }
 
   void update(Set<gmap.Polyline> route, Map<String?, gmap.Marker> _markers) {
