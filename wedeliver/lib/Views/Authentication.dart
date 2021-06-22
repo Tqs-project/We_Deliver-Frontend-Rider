@@ -656,7 +656,9 @@ class _AuthenticationState extends State<Authentication> {
     }
     var rider = Rider(username, email, password, phoneNumber, vehiclePlate);
     authBloc.register(rider, client);
-    authBloc.login(rider, client);
+    setState(() {
+      pressed = 'LOGIN';
+    });
   }
 
   void login() {
