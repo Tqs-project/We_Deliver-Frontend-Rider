@@ -1,0 +1,24 @@
+include: package:pedantic/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - lib/src/locations.g.dart
+  errors:
+      invalid_assignment: warning
+      missing_return: error
+      dead_code: info
+      unused_import: ignore
+      import_of_legacy_library_into_null_safe: ignore
+linter:
+  rules:
+    - always_declare_return_types
+    - camel_case_types
+    - empty_constructor_bodies
+    - annotate_overrides
+    - avoid_init_to_null
+    - constant_identifier_names
+    - one_member_abstracts
+    - slash_for_doc_comments
+    - sort_constructors_first
+    - unnecessary_brace_in_string_interps
+    - avoid_returning_null_for_future
